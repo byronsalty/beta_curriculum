@@ -81,6 +81,19 @@ In the future when working with multiple Elixir projects, there is a tool called
 4. Start the Livebook server and open the navigation page where you can find the course reading material and associated exercises
    - `livebook server start.livemd`
 
+### Docker
+
+1. Build Docker image
+   - `docker build -t dockyard/beta .`
+
+2. Run Docker container from image
+   - `docker run -it --rm --name beta -p 8080:8080 -v $(pwd)/reading:/data/reading -v $(pwd)/exercises:/data/exercises dockyard/beta`
+
+3. Go to url and open 'start.livemd' book.
+
+
+
+
 ## Troubleshooting
 
 Raise an issue or contact brooklin.myers@dockyard.com if you are having trouble setting up the curriculum.
