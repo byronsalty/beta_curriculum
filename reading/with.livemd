@@ -1,4 +1,4 @@
-# Pattern Matching
+# With
 
 ```elixir
 Mix.install([
@@ -17,255 +17,6 @@ Mix.install([
 ## Setup
 
 Ensure you type the `ea` keyboard shortcut to evaluate all Elixir cells before starting. Alternatively you can evaluate the Elixir cells as you read.
-
-## Pattern Matching
-
-We've already used pattern matching for matching values in a data structure.
-
-```elixir
-[_, two, _] = [1, 2, 3]
-
-two
-```
-
-We can use pattern matching in a wide variety of other cases.
-
-## Pattern Matching With Case
-
-Previously, we talked about how the case statement checks for a match.
-
-```elixir
-case "same" do
-  "same" -> "this will return"
-end
-```
-
-We're also able to use pattern matching for case statements. The first valid match will execute,
-and you can use the variables you assign in the instruction.
-
-```elixir
-case [1, 2] do
-  [] -> nil
-  [one] -> one
-  [one, two] -> one + two
-end
-```
-
-### Your Turn
-
-Trigger the `"A"` case. Replace `nil` with your answer.
-
-```elixir
-case_match =
-  case nil do
-    [_, _, 3] -> "A"
-    _ -> "default"
-  end
-
-Utils.feedback(:case_match, case_match)
-```
-
-## Pattern Matching Multi-Clause Functions
-
-You've already learned about using multi-clause functions with different arities or different guards to create polymorphic behavior.
-
-You can also create multi-clause functions with pattern matching.
-
-```elixir
-defmodule Greeter do
-  def greet([name1, name2]) do
-    "Hello, #{name1} and #{name2}"
-  end
-
-  def greet(%{name: name, identity: identity}) do
-    "Hi #{identity} err..I mean #{name}"
-  end
-
-  def greet(name) do
-    "Hello, #{name}"
-  end
-end
-```
-
-```elixir
-Greeter.greet("Peter")
-```
-
-```elixir
-Greeter.greet(["Peter", "Bruce"])
-```
-
-```elixir
-Greeter.greet(%{name: "Batman", identity: "Bruce Wayne"})
-```
-
-### Your Turn
-
-Use pattern matching to create a `Hello.everyone/1` function which only accepts a list with three or more elements.
-Remember that you can use the `[head | tail]` syntax with a list.
-
-Replace `nil` with your pattern match statement.
-
-<details>
-<summary>Hint</summary>
-<code>[one, two, three | tail] = list</code>
-</details>
-
-```elixir
-defmodule Hello do
-  def everyone(nil) do
-    "Hello, everyone!"
-  end
-end
-
-Utils.feedback(:hello_match, Hello)
-```
-
-## Pattern Matching in Anonymous Functions
-
-We can use pattern matching in anonymous functions.
-
-```elixir
-hello = fn
-  "Peter" -> "Hey Spidey!"
-  name -> "Hello, #{name}."
-end
-
-hello.("Bruce")
-```
-
-```elixir
-hello.("Peter")
-```
-
-Pattern matching becomes seriously powerful when leveraged with the [Enum](https://hexdocs.pm/elixir/Enum.html) module.
-
-```elixir
-list = [1, 2, 3]
-
-Enum.map(list, fn
-  1 -> "one"
-  int -> int * 2
-end)
-```
-
-Now we can enumerate and handle different patterns of data separately.
-
-```elixir
-list = [{:add, 4}, {:subtract, 2}, {:multiply, 2}, 10, %{add: 2}]
-
-Enum.reduce(list, 0, fn
-  {:add, int}, acc -> acc + int
-  {:subtract, int}, acc -> acc - int
-  {:multiply, int}, acc -> acc * int
-  %{add: int}, acc -> acc + int
-  int, acc -> acc + int
-end)
-```
-
-## Pattern Matching Vs. If
-
-Often we have many tools to accomplish the same action.
-For example, let's say we're building an application where users send each other messages.
-However, only admin users are allowed to send messages.
-
-Using `if`, we could write the following.
-
-```elixir
-defmodule Message do
-  def send(user, message) do
-    if user.is_admin do
-      message
-    else
-      {:error, :not_authorized}
-    end
-  end
-end
-```
-
-Let's say we also need to handle empty messages.
-
-```elixir
-defmodule Message do
-  def send(user, message) do
-    if user.is_admin do
-      if message == "" do
-        {:error, :empty_message}
-      else
-        message
-      end
-    else
-      {:error, :not_authorized}
-    end
-  end
-end
-
-Message.send(%{is_admin: true}, "")
-```
-
-Nested `if` statements are generally a cue that we should consider an alternative implementation.
-
-Let's see how we could solve this problem with pattern matching.
-
-```elixir
-defmodule Message do
-  def send(%{is_admin: true}, "") do
-    {:error, :empty_message}
-  end
-
-  def send(%{is_admin: true}, message) do
-    message
-  end
-
-  def send(%{is_admin: false}, _) do
-    {:error, :not_authorized}
-  end
-end
-
-Message.send(%{is_admin: true}, "")
-```
-
-Pattern matching can help reduce the complexity of our control flow.
-
-This implementation uses function clauses, but let's dive deep into the
-options we have for how to write this same code.
-
-We could also use a `case` statement with pattern matching.
-
-```elixir
-defmodule Message do
-  def send(user, message) do
-    case {user, message} do
-      {%{is_admin: true}, ""} -> {:error, :empty_message}
-      {%{is_admin: true}, message} -> message
-      {%{is_admin: false}, _} -> {:error, :not_authorized}
-    end
-  end
-end
-```
-
-We could even implement a solution with guards.
-
-```elixir
-defmodule Guards do
-  def send(user, message) when user.is_admin and message == "" do
-    {:error, :empty_message}
-  end
-
-  def send(user, message) when user.is_admin do
-    message
-  end
-
-  def send(user) do
-    {:error, :not_authorized}
-  end
-end
-```
-
-By showing you alternative solutions, we hope to bring your attention to the options you have so that you can make informed decisions about improving code clarity.
-
-We do not hope to tell you that one solution is always better than another.
-Context matters!
 
 ## With
 
@@ -387,8 +138,8 @@ Let's change our example to sending an email. To send an email, we need to ensur
 * The email has a title and a body.
 
 We also need the `name` of the sender and receiver and their emails.
-Here's how we can handle this with `case`. Arguably the
-nested `case` statements reduce the clarity of the code.
+
+Before `with` statements, we might solve this problem using nested `case` statements. This produces unclear code.
 
 ```elixir
 sending_user = %{name: "Batman", email: "notbrucewayne@bat.net", is_admin: true}
@@ -489,13 +240,13 @@ Use `with` to check that `scores`:
 * Each element is an integer.
 * Each element is ten or above.
 
-If so, sum the two scores together. If not, return `{:error, :invalid}`.
+If so, sum the two scores together and return `{:ok, score}`. If not, return `{:error, :invalid}`.
 
 <!-- livebook:{"force_markdown":true} -->
 
 ```elixir
 Points.tally([10, 20])
-30
+{:ok, 30}
 
 Points.tally(10)
 {:error, :invalid}
@@ -509,75 +260,30 @@ Points.tally([10, 20, 30])
 {:error, :invalid}
 ```
 
+<details style="background-color: lightgreen; padding: 1rem; margin: 1rem 0;">
+<summary>Example Solution</summary>
+
+```elixir
+defmodule Points do
+  def tally(scores) do
+    with [score1, score2] <- scores, true <- is_integer(score1), true <- is_integer(score2) do
+      score1 + score2
+    else
+      _ -> {:error, :invalid}
+    end
+  end
+end
+```
+
+</details>
+
+Enter your solution below.
+
 ```elixir
 defmodule Points do
   def tally(scores) do
   end
 end
-
-Utils.feedback(:with_points, Points)
-```
-
-## Pin Operator
-
-The **pin operator** allows us to use variables as hard-coded values,
-rather than rebinding a variable.
-
-Often we use the pin operator when testing our code to assert that the value is correct.
-
-For example, the following will rebind the **received** variable to `[1, 2, 3]`.
-
-```elixir
-received = [1, 2]
-expected = [1, 2, 3]
-
-received = expected
-```
-
-But instead, we might use the match operator to check that the received value matches the expected
-value.
-
-```elixir
-received = [1, 2]
-expected = [1, 2, 3]
-
-^received = expected
-```
-
-By using the pin operator above, we accomplish the same as if we had written:
-
-```elixir
-[1, 2] = [1, 2, 3]
-```
-
-We can also use this for internal values in a collection. The following is the same
-as `[1, 2, 3] = [2, 2, 3]`
-
-```elixir
-first = 1
-actual = [2, 2, 3]
-[^first, 2, 3] = actual
-```
-
-And the following is the same as `[1, 2, 3] = [1, 2, 3]`
-
-```elixir
-first = 1
-actual = [1, 2, 3]
-[^first, 2, 3] = actual
-```
-
-### Your Turn
-
-<!-- livebook:{"break_markdown":true} -->
-
-Use the pin operator to make the following code crash with a [MatchError](https://hexdocs.pm/elixir/MatchError.html).
-
-```elixir
-expected = {"hello"}
-actual = {"hello", "hi"}
-
-expected = actual
 ```
 
 ## Commit Your Progress
@@ -591,6 +297,6 @@ $ git commit -m "finish pattern matching section"
 
 ## Up Next
 
-| Previous                           | Next                                                       |
-| ---------------------------------- | ---------------------------------------------------------: |
-| [Guards](../reading/guards.livemd) | [Treasure Matching](../exercises/treasure_matching.livemd) |
+| Previous                                       | Next                                       |
+| ---------------------------------------------- | -----------------------------------------: |
+| [Book Search](../exercises/book_search.livemd) | [Behaviours](../reading/behaviours.livemd) |

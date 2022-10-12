@@ -135,7 +135,7 @@ However, we have a bug. The `answer` is re-bound every time we recursively call 
 Modify the `guessing_game.ex` script so that the random `answer` does not change each time the player guesses
 a number.
 
-<details>
+<details style="background-color: burlywood; padding: 1rem; margin: 1rem 0;">
 <summary>Hint</summary>
 Consider using module attributes, which are created at compile time and will not change.
 </details>
@@ -161,6 +161,6 @@ $ git commit -m "finish scripts section"
 
 ## Up Next
 
-| Previous                                           | Next                         |
-| -------------------------------------------------- | ---------------------------: |
-| [Kitchen Queue](../exercises/kitchen_queue.livemd) | [Mix](../reading/mix.livemd) |
+| Previous                                                   | Next                                                 |
+| ---------------------------------------------------------- | ---------------------------------------------------: |
+| [Pokemon Protocols](../exercises/pokemon_protocols.livemd) | [Snowman Script](../exercises/snowman_script.livemd) |

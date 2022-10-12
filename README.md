@@ -206,10 +206,16 @@ Enumeration 1
 Enumeration 2
 Built-in Modules
 Reduce
-2. Dates and Time
-3. Guards, Pattern Matching
-4. String Manipulation
-5. Protocols, and Behaviors.
+Dates and Time
+Pattern Matching
+Guards
+String Manipulation
+Protocols
+1. Elixir Build Tooling
+2. ExUnit & Testing
+3. Supervisor Basics and Fault Tolerance
+4. Relational Database Management Systems and Ecto
+5. Group Project
 
 ## Week 3: Performance, Persistence, and Processes
 
@@ -218,14 +224,6 @@ Reduce
 3. Files and Data Validation
 4. Processes
 5. Agent, Task, and ETS
-
-## Week 4: Mix Projects
-
-1. Elixir Build Tooling
-2. ExUnit & Testing
-3. Supervisor Basics and Fault Tolerance
-4. Relational Database Management Systems and Ecto
-5. Group Project
 
 ## Week 5: Web Servers and Phoenix
 

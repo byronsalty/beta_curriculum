@@ -43,13 +43,13 @@ defmodule UtilsTest do
       # to avoid changing the file every time a student opens a .livemd file.
       expected = Livebook.LiveMarkdown.MarkdownHelpers.reformat(file) <> "\n"
 
-      assert file == expected,
-             """
-             #{file_name}: Needs to be formatted.
+      assert file == expected
+      #  """
+      #  #{file_name}: Needs to be formatted.
 
-             Run mix bc.format_notebooks to format all notebooks.
-             Sometimes bullet points * can cause formatting issues.
-             """
+      #  Run mix bc.format_notebooks to format all notebooks.
+      #  Sometimes bullet points * can cause formatting issues.
+      #  """
     end)
   end
 
@@ -62,7 +62,8 @@ defmodule UtilsTest do
       "IEx",
       "Mix",
       "Poison",
-      "HTTPoison"
+      "HTTPoison",
+      "Timex"
     ]
 
     Notebooks.all_livebooks()
@@ -102,6 +103,7 @@ defmodule UtilsTest do
       {":smart_animation", "SmartAnimation."},
       {":hidden_cell", "HiddenCell."},
       {":benchee", "Benchee."},
+      {":timex", "Timex."},
       {":httpoison", "HTTPoison."},
       {":kino_db", "Elixir.KinoDB."},
       {":postgrex", "Kino.start_child({Postgrex}"}

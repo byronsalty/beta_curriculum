@@ -69,11 +69,11 @@ Run the following in your command line from the beta_curriculum folder to track 
 
 ```
 $ git add .
-$ git commit -m "finish item search exercise"
+$ git commit -m "finish book search exercise"
 ```
 
 ## Up Next
 
-| Previous                                                 | Next                                                   |
-| -------------------------------------------------------- | -----------------------------------------------------: |
-| [Animal Generator](../exercises/animal_generator.livemd) | [Built-in Modules](../reading/built-in_modules.livemd) |
+| Previous                                                 | Next                           |
+| -------------------------------------------------------- | -----------------------------: |
+| [Animal Generator](../exercises/animal_generator.livemd) | [With](../reading/with.livemd) |
