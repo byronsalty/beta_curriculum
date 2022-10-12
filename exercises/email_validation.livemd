@@ -89,8 +89,14 @@ defmodule Email do
     false
   """
   def valid?(email) do
+    # Regex.match?(~r/[^\.].+\@.+\..+[^\.]/, email)
+    Regex.match?(~r/[^\.].+\@.+\..+[^\.]/, email)
   end
 end
+```
+
+```elixir
+Email.valid?("mail@mail.com")
 ```
 
 ## Commit Your Progress
