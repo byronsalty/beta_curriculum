@@ -83,13 +83,16 @@ In the future when working with multiple Elixir projects, there is a tool called
 
 ### Docker
 
-1. Build Docker image
+1. Clone the project
+   - `git clone https://github.com/DockYard-Academy/beta_curriculum.git`
+
+2. Build Docker image
    - `docker build -t dockyard/beta .`
 
-2. Run Docker container from image
+3. Run Docker container from image
    - `docker run -it --rm --name beta -p 8080:8080 -v $(pwd)/reading:/data/reading -v $(pwd)/exercises:/data/exercises dockyard/beta`
 
-3. Go to url and open 'start.livemd' book.
+4. Go to url and open 'start.livemd' book.
 
 
 
