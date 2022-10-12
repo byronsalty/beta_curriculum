@@ -141,12 +141,45 @@ defmodule Rollable do
     iex> Rollable.replace("Ice Shard: deal 12d4 ice damage.")
     "Ice Shard: deal [12d4](https://www.google.com/search?q=roll+12d4) ice damage."
   """
+  def rollSingle(die) do
+    Enum.random(1..die)
+  end
+
+  def getUrl(dice) do
+    "[#{dice}](https://www.google.com/search?q=roll+#{dice})"
+  end
+
+  def getValue(dice) do
+    [_, num, die] = List.first(Regex.scan(~r/^(\d+)d(\d+)$/, dice))
+    [iNum, iDie] = Enum.map([num, die], fn x -> elem(Integer.parse(x), 0) end)
+
+    List.duplicate(iDie, iNum)
+    |> Enum.map(fn d -> rollSingle(d) end)
+    |> Enum.reduce(fn a, b -> a + b end)
+    |> Integer.to_string()
+  end
+
+  def replaceGeneric(string, fnc) do
+    [_, dice] = List.first(Regex.scan(~r/^.*\b(\d+d\d+)\b.*$/, string))
+    String.replace(string, dice, fnc.(dice))
+  end
+
   def replace(string) do
+    replaceGeneric(string, &getUrl/1)
   end
 
   def roll(string) do
+    replaceGeneric(string, &getValue/1)
   end
 end
+```
+
+```elixir
+Rollable.replace("1d6")
+
+Rollable.replace("Ice Shard: deal 12d4 ice damage.")
+
+Rollable.roll("10d6")
 ```
 
 ## Commit Your Progress
