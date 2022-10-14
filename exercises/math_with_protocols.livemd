@@ -154,6 +154,17 @@ defprotocol Math do
 end
 ```
 
+```elixir
+defimpl Math, for: BitString do
+  def add(bs1, bs2) do
+    bs1 <> bs2
+  end
+
+  def subtract(bs1, bs2) do
+  end
+end
+```
+
 ## Commit Your Progress
 
 Run the following in your command line from the beta_curriculum folder to track and save your progress in a Git commit.
