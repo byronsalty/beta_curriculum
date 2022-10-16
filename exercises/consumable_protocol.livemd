@@ -46,7 +46,18 @@ end
 Enter your solution below.
 
 ```elixir
+defmodule Character do
+  defstruct strength: 10,
+            dexterity: 10,
+            constitution: 10,
+            wisdom: 10,
+            intelligence: 10,
+            charisma: 10
+end
+```
 
+```elixir
+%Character{}
 ```
 
 Our game has `Consumable` items when modify a character's base stats. For example, we'll have
@@ -110,7 +121,31 @@ end
 Enter your solution below.
 
 ```elixir
-Enum.map("abc", fn char -> char end)
+defprotocol Consumable do
+  def consume(potion, char)
+end
+
+defmodule StrengthPotion do
+  defstruct level: 1
+end
+
+defmodule DexterityPotion do
+  defstruct level: 1
+end
+```
+
+```elixir
+defimpl Consumable, for: StrengthPotion do
+  def consume(potion, char) do
+    %Character{strength: char.strength + potion.level}
+  end
+end
+
+defimpl Consumable, for: DexterityPotion do
+  def consume(potion, char) do
+    %Character{dexterity: char.dexterity + potion.level}
+  end
+end
 ```
 
 To make our system extendable, we'll have a `Consumable` protocol, and separate implementations for structs such as the `StrengthPotion`.
@@ -179,7 +214,8 @@ end
 </details>
 
 ```elixir
-
+Consumable.consume(%StrengthPotion{level: 1}, %Character{})
+Consumable.consume(%DexterityPotion{level: 2}, %Character{})
 ```
 
 ## Commit Your Progress
