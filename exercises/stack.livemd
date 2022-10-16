@@ -54,9 +54,3 @@ Run the following in your command line from the beta_curriculum folder to track 
 $ git add .
 $ git commit -m "finish stack exercise"
 ```
-
-## Up Next
-
-| Previous                                                   | Next                                                   |
-| ---------------------------------------------------------- | -----------------------------------------------------: |
-| [Testing Genservers](../reading/testing_genservers.livemd) | [Product Filters](../exercises/product_filters.livemd) |

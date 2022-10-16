@@ -70,9 +70,3 @@ Run the following in your command line from the beta_curriculum folder to track 
 $ git add .
 $ git commit -m "finish classified exercise"
 ```
-
-## Up Next
-
-| Previous                                                         | Next                                               |
-| ---------------------------------------------------------------- | -------------------------------------------------: |
-| [Phone Number Parsing](../exercises/phone_number_parsing.livemd) | [Rpg Abilities](../exercises/rpg_abilities.livemd) |
