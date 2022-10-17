@@ -74,11 +74,121 @@ Here, we've colored happy path tests green and edge-case tests yellow.
 
 By planning test cases, we can anticipate possible edge cases and ensure we understand the desired behavior of the feature.
 
-Test and implement a `Math` module. Include at least two assertions for each happy path test case (**strings**, **lists**, and **integers**.)
+Test and implement a `Math` module. Include at least two assertions for the happy path cases (**strings**, **lists**, and **integers**.)
 
 ```elixir
 defmodule Math do
+  def add(a, b) when is_integer(a) and is_integer(b) do
+    a + b
+  end
+
+  def add(a, b) when is_binary(a) and is_binary(b) do
+    a <> b
+  end
+
+  def add(a, b) when is_list(a) and is_list(b) do
+    a ++ b
+  end
+
+  def add(a, b) do
+    {:error, :invalid_input}
+  end
+
+  def add!(a, b) do
+    result = add(a, b)
+
+    if {:error, :invalid_input} == result do
+      raise FunctionClauseError
+    else
+      result
+    end
+  end
+
+  def subtract(a, b) when is_integer(a) and is_integer(b) do
+    a - b
+  end
+
+  def subtract(a, b) when is_binary(a) and is_binary(b) do
+    (to_charlist(a) -- to_charlist(b))
+    |> to_string()
+  end
+
+  def subtract(a, b) when is_list(a) and is_list(b) do
+    a -- b
+  end
+
+  def subtract(a, b) do
+    {:error, :invalid_input}
+  end
 end
+```
+
+```elixir
+ExUnit.start(auto_run: false)
+
+defmodule MathTest do
+  use ExUnit.Case
+
+  test "Math.add/2 for intergers" do
+    assert Math.add(2, 3) == 5
+    assert Math.add(-2, 3) == 1
+    assert Math.add(0, 3) == 3
+  end
+
+  test "Math.add/2 for strings" do
+    assert Math.add("Hello ", "World") == "Hello World"
+    assert Math.add("", "This") == "This"
+    assert Math.add("", "") == ""
+  end
+
+  test "Math.add/2 for lists" do
+    assert Math.add([1, 2], [3, 4]) == [1, 2, 3, 4]
+    assert Math.add(["one", "two"], ["three", "four"]) == ["one", "two", "three", "four"]
+    assert Math.add([], [1]) == [1]
+    assert Math.add([], []) == []
+  end
+
+  test "Math.add/2 for invalid inputs" do
+    assert Math.add("Hello ", 1) == {:error, :invalid_input}
+    assert Math.add({1, 2}, {3, 4}) == {:error, :invalid_input}
+  end
+
+  test "Math.add!/2 valid and invalid inputs" do
+    assert Math.add!(1, 3) == 4
+    assert_raise FunctionClauseError, fn -> Math.add!("Hello", 1) end
+  end
+
+  test "Math.subtract/2 for intergers" do
+    assert Math.subtract(3, 2) == 1
+    assert Math.subtract(2, 3) == -1
+    assert Math.subtract(2, -3) == 5
+  end
+
+  test "Math.subtract/2 for strings" do
+    assert Math.subtract("abc", "c") == "ab"
+    assert Math.subtract("abc", "z") == "abc"
+    assert Math.subtract("abc", "") == "abc"
+    assert Math.subtract("", "a") == ""
+    assert Math.subtract("aabc", "a") == "abc"
+    assert Math.subtract("", "") == ""
+  end
+
+  test "Math.subtract/2 for lists" do
+    assert Math.subtract([1, 2, 3, 4], [3, 4]) == [1, 2]
+    assert Math.subtract([1, 2], [1]) == [2]
+    assert Math.subtract([1, 2], []) == [1, 2]
+    assert Math.subtract([], []) == []
+    assert Math.subtract([], [1]) == []
+  end
+
+  test "Math.subtract/2 for invalid inputs" do
+    assert Math.subtract("Hello", 1) == {:error, :invalid_input}
+    assert Math.subtract("Hello", {1, 2}) == {:error, :invalid_input}
+    assert Math.subtract({3, 4}, {1, 2}) == {:error, :invalid_input}
+  end
+end
+
+ExUnit.run()
 ```
 
 ### Bonus: Edge Cases
