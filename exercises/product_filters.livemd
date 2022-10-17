@@ -205,6 +205,17 @@ end
 Implement and test the `Products` module based on the provided test cases and documentation.
 
 ```elixir
+product_list = [
+  %{name: "Laptop", category: :tech, price: 100},
+  %{name: "Cell Phone", category: :tech, price: 500}
+]
+
+Enum.filter(product_list, fn x -> x.name == "Laptop" end)
+
+Regex.match?(~r/Lap/i, "laptop")
+```
+
+```elixir
 defmodule Products do
   @moduledoc """
   Documentation for `Products`
@@ -264,6 +275,43 @@ defmodule Products do
   Products.filter([%{name: "Laptop", category: :tech, price: 100}], min: 50, max: 200, name: "Laptop", category: :tech)
   """
   def filter(products, filters) do
+    products =
+      if filters[:name] do
+        Enum.filter(products, fn x ->
+          Regex.match?(~r/#{filters[:name]}/i, x.name)
+        end)
+      else
+        products
+      end
+
+    products =
+      if filters[:category] do
+        Enum.filter(products, fn x ->
+          x.category == filters[:category]
+        end)
+      else
+        products
+      end
+
+    products =
+      if filters[:min] do
+        Enum.filter(products, fn x ->
+          x.price >= filters[:min]
+        end)
+      else
+        products
+      end
+
+    products =
+      if filters[:max] do
+        Enum.filter(products, fn x ->
+          x.price <= filters[:max]
+        end)
+      else
+        products
+      end
+
+    products
   end
 end
 
@@ -272,23 +320,64 @@ ExUnit.start(auto_run: false)
 defmodule ProductsTest do
   use ExUnit.Case
 
-  test "filter/2 empty filters"
+  test "filter/2 empty filters" do
+    product_list = [%{name: "Laptop", category: :tech, price: 100}]
+    assert Products.filter(product_list, []) == product_list
+  end
 
-  test "filter/2 by exact matching name"
+  test "filter/2 by exact matching name" do
+    product_list = [
+      %{name: "Laptop", category: :tech, price: 100},
+      %{name: "Cell Phone", category: :tech, price: 500}
+    ]
 
-  test "filter/2 by partial matching name"
+    filtered_list = Products.filter(product_list, name: "Laptop")
+    assert filtered_list == [%{name: "Laptop", category: :tech, price: 100}]
+  end
 
-  test "filter/2 by mixed case partial matching name"
+  test "filter/2 by partial matching name" do
+    product_list = [
+      %{name: "Laptop", category: :tech, price: 100},
+      %{name: "Cell Phone", category: :tech, price: 500}
+    ]
 
-  test "filter/2 by category"
+    filtered_list = Products.filter(product_list, name: "Lap")
+    assert filtered_list == [%{name: "Laptop", category: :tech, price: 100}]
 
-  test "filter/2 by min price"
+    filtered_list2 = Products.filter(product_list, name: "L")
+    assert filtered_list2 == product_list
 
-  test "filter/2 by max price"
+    filtered_list3 = Products.filter(product_list, name: "zzz")
+    assert filtered_list3 == []
+  end
 
-  test "filter/2 by max and min price"
+  # test "filter/2 by mixed case partial matching name"
 
-  test "filter/2 all filters"
+  test "filter/2 by category" do
+    product_list = [
+      %{name: "Laptop", category: :tech, price: 100},
+      %{name: "Cell Phone", category: :tech, price: 500}
+    ]
+
+    filtered_list = Products.filter(product_list, category: :tech)
+    assert filtered_list == product_list
+  end
+
+  test "filter/2 by min price" do
+    product_list = [
+      %{name: "Laptop", category: :tech, price: 100},
+      %{name: "Cell Phone", category: :tech, price: 500}
+    ]
+
+    filtered_list = Products.filter(product_list, min: 200)
+    assert filtered_list == [%{name: "Cell Phone", category: :tech, price: 500}]
+  end
+
+  # test "filter/2 by max price"
+
+  # test "filter/2 by max and min price"
+
+  # test "filter/2 all filters"
 end
 
 ExUnit.run()
