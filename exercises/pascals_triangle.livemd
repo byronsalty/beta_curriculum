@@ -113,7 +113,31 @@ Pascal.of(5)
 ```
 
 ```elixir
+defmodule Pascal do
+  def of_list(1), do: [1]
 
+  def of_list(n) do
+    prev_row = of_list(n - 1)
+
+    Enum.zip([0] ++ prev_row, prev_row ++ [0])
+    |> Enum.map(fn {a, b} -> a + b end)
+  end
+
+  def of(n) do
+    Enum.map(1..n, fn x -> of_list(x) end)
+  end
+end
+
+Pascal.of(5)
+```
+
+```elixir
+l = [1, 1]
+l1 = l ++ [0]
+l2 = [0] ++ l
+
+Enum.zip(l1, l2)
+|> Enum.map(fn {a, b} -> a + b end)
 ```
 
 ## Commit Your Progress
