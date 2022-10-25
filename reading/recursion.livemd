@@ -18,6 +18,10 @@ Mix.install([
 
 Ensure you type the `ea` keyboard shortcut to evaluate all Elixir cells before starting. Alternatively you can evaluate the Elixir cells as you read.
 
+```elixir
+
+```
+
 ## Recursion
 
 Recursion is a function that calls itself.
@@ -32,15 +36,25 @@ Recursion creates a loop effect where the function calls itself over and over.
 
 ```elixir
 defmodule Recursion do
-  def loop(n) do
-    if n > 0 do
-      IO.puts(n)
-      loop(n - 1)
+  def adder(a, b) do
+    if a + b > 4 do
+      IO.puts("exiting with #{a} and #{b}")
+      0
+    else
+      a + b
     end
+  end
+
+  def loop([]) do
+    0
+  end
+
+  def loop([head | tail]) do
+    adder(head, loop(tail))
   end
 end
 
-Recursion.loop(5)
+Recursion.loop([1, 2, 3])
 ```
 
 This calls the loop function 5 times. Under the hood, this places 5 stack frames on the stack.
@@ -142,7 +156,7 @@ You may need to click the **Connect** button to reconnect the Elixir runtime.
 ```elixir
 # defmodule Body do
 #   def recursion([head | tail]) do
-#     recursion(tail ++ tail) ++ [head]
+#     [head] ++ recursion(tail ++ tail)
 #   end
 # end
 
