@@ -223,7 +223,9 @@ The curriculum is still a rough outline subject to change and feedback. see [sta
 * Streams
 * Performance Optimization
 * Processes
+* Asynchronous Messages
 * Supervisor Basics and Fault Tolerance
+* Mix Projects & Processes
 * Concurrency With Tasks
 * State Management With Agents
 * In Memory State With Agents and ETS.

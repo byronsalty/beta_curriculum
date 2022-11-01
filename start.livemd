@@ -11,24 +11,7 @@ flowchart
 Welcome!
 ```
 
-If you don't see that diagram, please ensure that your livebook version is correct by running the following command.
-
-```sh
-mix do local.rebar --force, local.hex --force
-mix escript.install hex livebook
-```
-
-If you use `asdf` as your version manager, make sure you recreate shims:
-
-```sh
-asdf reshim
-```
-
-Then restart your livebook server. You can stop the server using <kbd>CTRL</kbd>+<kbd>C</kbd> and start it again using the following command from the curriculum folder.
-
-```
-livebook server start.livemd
-```
+If you do not see the box above, or if you encounter any issues with this course, please ensure you have correctly followed the [Student Setup Guide](https://github.com/DockYard-Academy/beta_curriculum/wiki/Student-Setup-Guide) or [Report An Issue](https://github.com/DockYard-Academy/beta_curriculum/issues/new?assignees=&labels=&template=issue.md&title=) to receive help.
 
 ## Core Syntax
 
@@ -277,11 +260,11 @@ livebook server start.livemd
 
 * Reading
   * [Computer Hardware](reading/computer_hardware.livemd)
-  * [Benchmarking](reading/benchmarking.livemd)
   * [Big O Notation](reading/big_o_notation.livemd)
+  * [Benchmarking](reading/benchmarking.livemd)
 * Exercises
-  * [Custom Enum](exercises/custom_enum_with_recursion.livemd)
   * [Games: Benchmarking](exercises/games_benchmarking.livemd)
+  * [Custom Enum](exercises/custom_enum_with_recursion.livemd)
 
 <!-- livebook:{"break_markdown":true} -->
 
@@ -301,8 +284,8 @@ livebook server start.livemd
   * [Lists and Tuples](reading/lists_vs_tuples.livemd)
   * [Maps, MapSets, and Keyword Lists](reading/maps_mapsets_keyword_lists.livemd)
 * Exercises
-  * Drills: MapSets
-  * MapSet Product Filters
+  * [Drills: MapSets](exercises/mapset_drills.livemd)
+  * [MapSet Product Filters](exercises/mapset_product_filters.livemd)
   * [Fibonacci Challenge](exercises/fibonacci_challenge.livemd)
 
 <!-- livebook:{"break_markdown":true} -->
@@ -313,9 +296,19 @@ livebook server start.livemd
   * [Processes](reading/processes.livemd)
   * [Generic Server](reading/generic_server.livemd)
 * Exercises
+  * [Stack Server](exercises/stack_server.livemd)
   * [Traffic Light Server](exercises/traffic_light_server.livemd)
-  * [Rock Paper Scissors GenServer](exercises/rock_paper_scissors_genserver.livemd)
-  * [Pokemon Server](exercises/pokemon_server.livemd)
+  * Bonus: [Pokemon Server](exercises/pokemon_server.livemd)
+
+<!-- livebook:{"break_markdown":true} -->
+
+### Asynchronous Messages
+
+* Reading
+  * Asynchronous Messages
+* Exercises
+  * handle_info exercise
+  * handle_cast exercise
 
 <!-- livebook:{"break_markdown":true} -->
 
@@ -323,12 +316,22 @@ livebook server start.livemd
 
 * Reading
   * [Supervisors](reading/supervisors.livemd)
-  * [Supervised Mix Project](reading/supervised_mix_project.livemd)
 * Exercises
   * [Supervised Stack](exercises/supervised_stack.livemd)
   * [Dominoes](exercises/dominoes.livemd)
   * [Creature Spawner](exercises/creature_spawner.livemd)
   * [Typing Game](exercises/typing_game.livemd)
+
+<!-- livebook:{"break_markdown":true} -->
+
+### Mix Projects & Processes
+
+* Reading
+  * [Supervised Mix Project](reading/supervised_mix_project.livemd)
+  * [Testing GenServers](reading/testing_genservers.livemd)
+* Exercises
+  * [Stack GenServer Testing](exercises/stack.livemd)
+  * [Games: Rock Paper Scissors Server]
 
 <!-- livebook:{"break_markdown":true} -->
 

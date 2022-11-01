@@ -3,9 +3,7 @@
 ```elixir
 Mix.install([
   {:youtube, github: "brooklinjazz/youtube"},
-  {:hidden_cell, github: "brooklinjazz/hidden_cell"},
-  {:tested_cell, github: "brooklinjazz/tested_cell"},
-  {:utils, path: "#{__DIR__}/../utils"}
+  {:hidden_cell, github: "brooklinjazz/hidden_cell"}
 ])
 ```
 
@@ -1173,11 +1171,17 @@ For experimenting with HTML and CSS, we recommend sites such as [CodePen](https:
 ## Commit Your Progress
 
 Run the following in your command line from the beta_curriculum folder to track and save your progress in a Git commit.
+Ensure that you do not already have undesired or unrelated changes by running `git status` or by checking the source control tab in Visual Studio Code.
 
 ```
+$ git checkout main
+$ git checkout -b exercise-html_css
 $ git add .
 $ git commit -m "finish html css section"
+$ git push origin exercise-html_css
 ```
+
+Then create a pull request to your `main` branch and notify your teacher by including `@BrooklinJazz` in your PR description to get feedback.
 
 ## Up Next
 
