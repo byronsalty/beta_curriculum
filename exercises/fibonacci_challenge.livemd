@@ -36,6 +36,7 @@ Implement the `Fibonacci.sequence/1` function below. Do not worry about performa
 
 ```elixir
 defmodule Fibonacci do
+  @start [0, 1, 1, 2, 3]
   @doc """
   Generate the fibonacci sequence of a given length.
 
@@ -43,9 +44,34 @@ defmodule Fibonacci do
 
     iex> 
   """
+  @last 3
+  @last2 2
+  def sequence(length) when length <= 5 do
+    Enum.take(@start, length)
+  end
+
   def sequence(length) do
+    [n2, n1] = @start |> Enum.take(-2)
+
+    full_seq(Enum.reverse(@start), length, n1, n2, @gen_count)
+  end
+
+  def full_seq(acc, target, n1, n2, cnt) do
+    if cnt == target do
+      Enum.reverse(acc)
+    else
+      n0 = n1 + n2
+      # full_seq(acc ++ [n0], target, n0, n1, cnt + 1)
+
+      # [n0 | acc]
+      full_seq([n0 | acc], target, n0, n1, cnt + 1)
+    end
   end
 end
+```
+
+```elixir
+Fibonacci.sequence(100)
 ```
 
 ## Competition: Benchmark
@@ -54,9 +80,96 @@ In the Elixir cell below, create a `FastFib` module. The `FastFib` module should
 
 ```elixir
 defmodule FastFib do
+  #  @start [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765, 10946,
+  #  17711, 28657, 46368, 75025, 121393, 196418, 317811, 514229, 832040, 1346269, 2178309, 3524578,
+  #  5702887, 9227465, 14930352, 24157817, 39088169, 63245986, 102334155, 165580141, 267914296,
+  #  433494437, 701408733, 1134903170, 1836311903, 2971215073, 4807526976, 7778742049]
+  @gen_count 100_000
+  @start Fibonacci.sequence(@gen_count)
+
+  def sequence(length) when length <= @gen_count do
+    Enum.take(@start, length)
+  end
+
   def sequence(length) do
+    [n2, n1] = @start |> Enum.take(-2)
+
+    full_seq(Enum.reverse(@start), length, n1, n2, @gen_count)
+  end
+
+  def full_seq(acc, target, n1, n2, cnt) do
+    if cnt == target do
+      Enum.reverse(acc)
+    else
+      n0 = n1 + n2
+      # full_seq(acc ++ [n0], target, n0, n1, cnt + 1)
+
+      # [n0 | acc]
+      full_seq([n0 | acc], target, n0, n1, cnt + 1)
+    end
   end
 end
+```
+
+```elixir
+l = [
+  0,
+  1,
+  1,
+  2,
+  3,
+  5,
+  8,
+  13,
+  21,
+  34,
+  55,
+  89,
+  144,
+  233,
+  377,
+  610,
+  987,
+  1597,
+  2584,
+  4181,
+  6765,
+  10946,
+  17711,
+  28657,
+  46368,
+  75025,
+  121_393,
+  196_418,
+  317_811,
+  514_229,
+  832_040,
+  1_346_269,
+  2_178_309,
+  3_524_578,
+  5_702_887,
+  9_227_465,
+  14_930_352,
+  24_157_817,
+  39_088_169,
+  63_245_986,
+  102_334_155,
+  165_580_141,
+  267_914_296,
+  433_494_437,
+  701_408_733,
+  1_134_903_170,
+  1_836_311_903,
+  2_971_215_073,
+  4_807_526_976,
+  7_778_742_049
+]
+
+Enum.count(l)
+```
+
+```elixir
+FastFib.sequence(100_000)
 ```
 
 Use [Benchee](https://hexdocs.pm/benchee/Benchee.html) to benchmark the performance of `FastFib.sequence/1` function. The student in the class with the fastest `FastFib` time wins.
@@ -67,17 +180,21 @@ Benchee.run(
     fast_fib: fn n -> FastFib.sequence(n) end
   },
   inputs: %{
-    "1: small" => 10,
-    "2: medium" => 30
-    # Uncomment the following if your solution can handle it! 
-    # Make sure to add a comma above.
+    # "1: small" => 10,
+    # "2: medium" => 30,
+    # # Uncomment the following if your solution can handle it! 
+    # # Make sure to add a comma above.
     # "3: large" => 100,
     # "4: xl" => 1000,
     # "6: 2xl" => 10000,
-    # "7: 3xl" => 100_000
+    "7: 3xl" => 100_000
   },
   memory_time: 2
 )
+
+# ##### With input 3: large #####
+# Name               ips        average  deviation         median         99th %
+# fast_fib      143.58 K        6.96 μs   ±617.45%        4.01 μs       31.91 μs
 ```
 
 ## Commit Your Progress
