@@ -234,7 +234,11 @@ In the Elixir cell below, try refactoring this code using the [Stream](https://h
 ```
 
 ```elixir
-
+1..100
+|> Stream.map(fn each -> div(each, 2) end)
+|> Stream.map(fn each -> each * 3 end)
+|> Stream.filter(fn each -> rem(each, 2) === 0 end)
+|> Enum.to_list()
 ```
 
 ## Stream Gotchas
@@ -434,7 +438,33 @@ end)
 </details>
 
 ```elixir
+defmodule Collatz do
+  def next(int) when rem(int, 2) == 0, do: round(int / 2)
+  def next(int) when rem(int, 2) == 1, do: 3 * int + 1
+  def break(int), do: int * 2 + 1
 
+  def length(int) do
+    Stream.iterate(int, fn acc -> Collatz.next(acc) end)
+    |> Enum.take_while(fn x -> x != 1 end)
+    |> Enum.to_list()
+    |> Enum.count()
+  end
+end
+```
+
+```elixir
+Stream.iterate(3, fn acc -> Collatz.break(acc) end)
+|> Enum.take_while(fn x -> x < 10_000_000_000_000_000_000 end)
+|> Enum.map(fn x -> {x, Collatz.length(x)} end)
+
+# |> Enum.take(-1)
+```
+
+```elixir
+Stream.iterate(9_444_732_965_739_290_427_391, fn acc -> Collatz.next(acc) end)
+|> Enum.take_while(fn x -> x != 1 end)
+|> Enum.to_list()
+|> Enum.count()
 ```
 
 ### Stream.unfold/2
@@ -495,7 +525,8 @@ end)
 </details>
 
 ```elixir
-
+Stream.unfold(1, fn acc -> {acc ** 3, acc + 1} end)
+|> Enum.take(20)
 ```
 
 ## Commit Your Progress
