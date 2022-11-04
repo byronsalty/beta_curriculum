@@ -112,7 +112,7 @@ pid = spawn(fn -> IO.puts("I was called") end)
 Process.alive?(pid) && IO.puts("I am alive!")
 ```
 
-We can use [Process.sleep/1](https://hexdocs.pm/elixir/Process.html#sleep/1) to pause the execution and show that the spawned process dies
+t We can use [Process.sleep/1](https://hexdocs.pm/elixir/Process.html#sleep/1) to pause the execution and show that the spawned process dies
 after it is called.
 
 ```elixir
@@ -143,6 +143,7 @@ sequenceDiagram
 ```elixir
 spawn(fn -> raise "oops" end)
 "the above crashes, but I will keep running."
+Process.alive?(self())
 ```
 
 If this is not desirable behavior, we can link processes together so that if one dies, the other will
