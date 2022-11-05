@@ -61,6 +61,12 @@ defmodule Mailbox do
   Documentation for `Mailbox`
   """
 
+  def receive_msg(state, msg) do
+    IO.puts(msg)
+    IO.puts(state)
+    loop([msg | state])
+  end
+
   @doc """
   Recursively loop and receive messages.
 
@@ -71,8 +77,23 @@ defmodule Mailbox do
       :ok
   """
   def loop(state \\ []) do
+    receive do
+      {:message, msg} -> receive_msg(state, msg)
+    end
   end
 end
+```
+
+```elixir
+mailbox_process = spawn(fn -> Mailbox.loop() end)
+```
+
+```elixir
+Process.link(mailbox_process)
+```
+
+```elixir
+send(mailbox_process, {:mail, "You've Got Mail... Again!"})
 ```
 
 ## Commit Your Progress
