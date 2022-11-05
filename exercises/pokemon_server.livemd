@@ -155,13 +155,52 @@ defmodule Pokemon do
   """
   use GenServer
 
+  @enforce_keys [:name, :type]
+  defstruct @enforce_keys ++ [health: 20, attack: 5]
+
+  @attack_mods %{
+    {:fire, :grass} => 2,
+    {:grass, :water} => 2,
+    {:water, :fire} => 2,
+    {:fire, :water} => 0.5,
+    {:grass, :fire} => 0.5,
+    {:water, :grass} => 0.5
+  }
+
+  @impl
+  def init(opts) do
+    {:ok, {opts[:pokemon]}}
+  end
+
+  def handle_call(:get_state, _, {poke}) do
+    {:reply, poke, {poke}}
+  end
+
+  def handle_call({:update_health, health}, _, {poke}) do
+    new_poke = %Pokemon{poke | health: health}
+    {:reply, new_poke, {new_poke}}
+  end
+
+  defp get_state(pid) do
+    GenServer.call(pid, :get_state)
+  end
+
+  defp update_health(pid, health) do
+    GenServer.call(pid, {:update_health, health})
+  end
+
   @doc """
   Start the Pokemon GenServer.
 
   ## Examples
       iex> {:ok, pokemon} = Pokemon.start_link([pokemon: %Pokemon{name: "Charmander", type: :fire}])
   """
-  def start_link(opts \\ []) do
+  def start_link([] \\ []) do
+    {:error, "Send in a Pokemon"}
+  end
+
+  def start_link(opts) do
+    GenServer.start_link(__MODULE__, opts)
   end
 
   @doc """
@@ -204,9 +243,41 @@ defmodule Pokemon do
       iex> Pokemon.attack(attacker, defender)
       %Pokemon{name: "Bulbasaur2", type: :grass, health: 25, attack: 5}
   """
-  def attack(attacker, defender) do
+  def calculate_damage(att_poke, def_poke) do
+    mod = @attack_mods[{att_poke.type, def_poke.type}] || 1
+    att_poke.attack * mod
+  end
+
+  def attack(att_pid, def_pid) do
+    att_poke = get_state(att_pid)
+    def_poke = get_state(def_pid)
+    damage_amt = calculate_damage(att_poke, def_poke)
+    rem_health = def_poke.health - damage_amt
+    update_health(def_pid, rem_health)
   end
 end
+```
+
+```elixir
+p = %Pokemon{name: "Charmander", type: :fire}
+p.health
+```
+
+```elixir
+p = %Pokemon{p | health: 20}
+```
+
+```elixir
+{_, att_pid} = Pokemon.start_link(pokemon: %Pokemon{name: "Charmander", type: :fire})
+{_, def_pid} = Pokemon.start_link(pokemon: %Pokemon{name: "Bulbasaur", type: :grass, health: 25})
+```
+
+```elixir
+Pokemon.attack(def_pid, att_pid)
+```
+
+```elixir
+GenServer.call(def_pid, :get_state)
 ```
 
 ## Commit Your Progress
