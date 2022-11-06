@@ -156,7 +156,7 @@ defmodule Pokemon do
   use GenServer
 
   @enforce_keys [:name, :type]
-  defstruct @enforce_keys ++ [health: 20, attack: 5]
+  defstruct @enforce_keys ++ [health: 20, attack: 5, alive: true]
 
   @attack_mods %{
     {:fire, :grass} => 2,
@@ -176,16 +176,25 @@ defmodule Pokemon do
     {:reply, poke, {poke}}
   end
 
+  def handle_call(:died, _, {poke}) do
+    new_poke = %Pokemon{poke | alive: false}
+    {:reply, new_poke, {new_poke}}
+  end
+
   def handle_call({:update_health, health}, _, {poke}) do
     new_poke = %Pokemon{poke | health: health}
     {:reply, new_poke, {new_poke}}
   end
 
-  defp get_state(pid) do
+  def get_state(pid) do
     GenServer.call(pid, :get_state)
   end
 
   defp update_health(pid, health) do
+    if health <= 0 do
+      GenServer.call(pid, :died)
+    end
+
     GenServer.call(pid, {:update_health, health})
   end
 
@@ -201,6 +210,15 @@ defmodule Pokemon do
 
   def start_link(opts) do
     GenServer.start_link(__MODULE__, opts)
+  end
+
+  def start_random() do
+    type = [:grass, :water, :fire] |> Enum.random()
+    health = 15..34 |> Enum.random()
+    attack = 9 - floor(health / 5)
+    name = "#{type}y #{Enum.random(1..99)}"
+    poke = %Pokemon{name: name, type: type, health: health, attack: attack}
+    start_link(pokemon: poke)
   end
 
   @doc """
@@ -260,11 +278,10 @@ end
 
 ```elixir
 p = %Pokemon{name: "Charmander", type: :fire}
-p.health
 ```
 
 ```elixir
-p = %Pokemon{p | health: 20}
+Pokemon.start_random()
 ```
 
 ```elixir
@@ -278,6 +295,77 @@ Pokemon.attack(def_pid, att_pid)
 
 ```elixir
 GenServer.call(def_pid, :get_state)
+```
+
+```elixir
+defmodule PokemonBattledome do
+  use GenServer
+
+  @num_poke 5
+
+  @impl
+  def init(count) do
+    pids =
+      1..count
+      |> Enum.map(fn i ->
+        {:ok, pid} = Pokemon.start_random()
+        pid
+      end)
+
+    {:ok, pids}
+  end
+
+  def handle_call(:round, _, pids) do
+    response =
+      Enum.map(pids, fn pid ->
+        other_pids = pids -- [pid]
+        def_pid = Enum.random(other_pids)
+        Pokemon.attack(pid, def_pid)
+      end)
+
+    new_pids =
+      Enum.filter(pids, fn pid ->
+        poke = Pokemon.get_state(pid)
+        poke.alive == true
+      end)
+
+    {:reply, response, new_pids}
+  end
+
+  def handle_call(:status, _, pids) do
+    response =
+      Enum.map(pids, fn pid ->
+        Pokemon.get_state(pid)
+      end)
+
+    {:reply, response, pids}
+  end
+
+  def start_link(count \\ @num_poke) do
+    GenServer.start_link(__MODULE__, count)
+  end
+
+  def fight(pid) do
+    GenServer.call(pid, :round)
+  end
+
+  def status(pid) do
+    GenServer.call(pid, :status)
+  end
+end
+```
+
+```elixir
+{:ok, dome} = PokemonBattledome.start_link(5)
+PokemonBattledome.status(dome)
+```
+
+```elixir
+PokemonBattledome.fight(dome)
+```
+
+```elixir
+PokemonBattledome.status(dome)
 ```
 
 ## Commit Your Progress
