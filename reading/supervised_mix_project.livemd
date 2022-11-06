@@ -382,7 +382,7 @@ so we can keep playing. That's the definition of fault-tolerance!
 
 ## Commit Your Progress
 
-Run the following in your command line from the beta_curriculum folder to track and save your progress in a Git commit.
+Run the following in your command line from the curriculum folder to track and save your progress in a Git commit.
 Ensure that you do not already have undesired or unrelated changes by running `git status` or by checking the source control tab in Visual Studio Code.
 
 ```
@@ -393,10 +393,14 @@ $ git commit -m "finish supervised mix project section"
 $ git push origin exercise-supervised_mix_project
 ```
 
-Then create a pull request to your `main` branch and notify your teacher by including `@BrooklinJazz` in your PR description to get feedback.
+**DockYard Academy Students Only:**
+
+Create a pull request to your forked `main` branch and notify your teacher by including `@BrooklinJazz` in your PR description to get feedback.
+
+If you are interested in joining the next academy cohort, [sign up here](https://academy.dockyard.com/) to receive more news when it is available.
 
 ## Up Next
 
-| Previous                                       | Next                                                       |
-| ---------------------------------------------- | ---------------------------------------------------------: |
-| [Typing Game](../exercises/typing_game.livemd) | [Testing GenServers](../reading/testing_genservers.livemd) |
+| Previous                                                 | Next                                                       |
+| -------------------------------------------------------- | ---------------------------------------------------------: |
+| [Creature Spawner](../exercises/creature_spawner.livemd) | [Testing GenServers](../reading/testing_genservers.livemd) |

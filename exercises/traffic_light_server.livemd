@@ -59,7 +59,7 @@ The `TrafficLightServer` should define some [Client API](https://hexdocs.pm/elix
 <!-- livebook:{"force_markdown":true} -->
 
 ```elixir
-{:ok, pid} = TrafficLight.start_link()
+{:ok, pid} = TrafficLight.start_link([])
 
 :green = TrafficLight.current_light(pid)
 :yellow = TrafficLight.transition(pid)
@@ -141,7 +141,7 @@ defmodule TrafficLight do
 
   ## Examples
 
-      iex> TrafficLightServer.start_link()
+      iex> TrafficLightServer.start_link([])
       {:ok, pid}
   """
   def start_link(opts) do
@@ -153,7 +153,7 @@ defmodule TrafficLight do
 
   ## Examples
 
-      iex> {:ok, pid} = TrafficLightServer.start_link()
+      iex> {:ok, pid} = TrafficLightServer.start_link([])
       iex> TrafficLightServer.transition(pid)
       :yellow
       iex> TrafficLightServer.transition(pid)
@@ -170,7 +170,7 @@ defmodule TrafficLight do
 
   ## Examples
 
-      iex> {:ok, pid} = TrafficLightServer.start_link()
+      iex> {:ok, pid} = TrafficLightServer.start_link([])
       iex> TrafficLightServer.current_light(pid)
       :green
   """
@@ -412,7 +412,7 @@ TrafficGridServer.transition(grid)
 
 ## Commit Your Progress
 
-Run the following in your command line from the beta_curriculum folder to track and save your progress in a Git commit.
+Run the following in your command line from the curriculum folder to track and save your progress in a Git commit.
 Ensure that you do not already have undesired or unrelated changes by running `git status` or by checking the source control tab in Visual Studio Code.
 
 ```
@@ -423,7 +423,11 @@ $ git commit -m "finish traffic light server exercise"
 $ git push origin exercise-traffic_light_server
 ```
 
-Then create a pull request to your `main` branch and notify your teacher by including `@BrooklinJazz` in your PR description to get feedback.
+**DockYard Academy Students Only:**
+
+Create a pull request to your forked `main` branch and notify your teacher by including `@BrooklinJazz` in your PR description to get feedback.
+
+If you are interested in joining the next academy cohort, [sign up here](https://academy.dockyard.com/) to receive more news when it is available.
 
 ## Up Next
 
