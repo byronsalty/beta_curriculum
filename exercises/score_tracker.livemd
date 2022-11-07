@@ -78,6 +78,22 @@ defmodule ScoreTracker do
   """
   use GenServer
 
+  @impl true
+  def init(_opts) do
+    {:ok, 0}
+  end
+
+  @impl true
+  def handle_call(:get_score, _, score) do
+    {:reply, score, score}
+  end
+
+  @impl true
+  def handle_cast({:add_score, amt}, score) do
+    new_score = score + amt
+    {:noreply, new_score}
+  end
+
   @doc """
   Start the `ScoreTracker` process.
 
@@ -86,6 +102,7 @@ defmodule ScoreTracker do
     iex> {:ok, pid} = ScoreTracker.start_link([])
   """
   def start_link(_opts) do
+    GenServer.start_link(__MODULE__, _opts)
   end
 
   @doc """
@@ -98,6 +115,7 @@ defmodule ScoreTracker do
       :ok
   """
   def score(score_tracker_pid, amount) do
+    GenServer.cast(score_tracker_pid, {:add_score, amount})
   end
 
   @doc """
@@ -110,8 +128,19 @@ defmodule ScoreTracker do
       0
   """
   def get_score(score_tracker_pid) do
+    GenServer.call(score_tracker_pid, :get_score)
   end
 end
+```
+
+```elixir
+{:ok, pid} = ScoreTracker.start_link([])
+ScoreTracker.score(pid, 10)
+# 10
+IO.puts(ScoreTracker.get_score(pid))
+ScoreTracker.score(pid, 20)
+# 30
+IO.puts(ScoreTracker.get_score(pid))
 ```
 
 ## Bonus: Multiplayer Score Tracker
@@ -174,6 +203,36 @@ defmodule MultiplayerScoreTracker do
   """
   use GenServer
 
+  @impl true
+  def init(_opts) do
+    {:ok, %{}}
+  end
+
+  @impl true
+  def handle_call({:get_score, player}, _, state) do
+    score = state[player] || 0
+    {:reply, score, state}
+  end
+
+  def handle_call(:get_all_scores, _, state) do
+    {:reply, state, state}
+  end
+
+  @impl true
+  def handle_cast({:add_score, player, amt}, state) do
+    new_state =
+      if state[player] do
+        current = state[player]
+        %{state | player => current + amt}
+      else
+        current = 0
+        # %{state | player => current + amt}
+        Map.put(state, player, amt)
+      end
+
+    {:noreply, new_state}
+  end
+
   @doc """
   Start the `MultyplayerScoreTracker` process.
 
@@ -182,6 +241,7 @@ defmodule MultiplayerScoreTracker do
       iex> {:ok, pid} = MultiplayerScoreTracker.start_link([])
   """
   def start_link(_opts) do
+    GenServer.start_link(__MODULE__, _opts)
   end
 
   @doc """
@@ -198,6 +258,7 @@ defmodule MultiplayerScoreTracker do
       :ok
   """
   def score(multiplayer_score_tracker_pid, player_name, amount) do
+    GenServer.cast(multiplayer_score_tracker_pid, {:add_score, player_name, amount})
   end
 
   @doc """
@@ -228,6 +289,7 @@ defmodule MultiplayerScoreTracker do
       %{player1: 10, player2: 10}
   """
   def all_scores(multiplayer_score_tracker_pid) do
+    GenServer.call(multiplayer_score_tracker_pid, :get_all_scores)
   end
 
   @doc """
@@ -249,8 +311,19 @@ defmodule MultiplayerScoreTracker do
     10
   """
   def get_score(multiplayer_score_tracker_pid, player_name) do
+    GenServer.call(multiplayer_score_tracker_pid, {:get_score, player_name})
   end
 end
+```
+
+```elixir
+{:ok, pid} = MultiplayerScoreTracker.start_link([])
+IO.inspect(MultiplayerScoreTracker.all_scores(pid))
+
+MultiplayerScoreTracker.score(pid, :abc, 10)
+IO.inspect(MultiplayerScoreTracker.get_score(pid, :abc))
+MultiplayerScoreTracker.score(pid, :player2, 10)
+IO.inspect(MultiplayerScoreTracker.all_scores(pid))
 ```
 
 ## Commit Your Progress
