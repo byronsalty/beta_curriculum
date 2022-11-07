@@ -88,6 +88,8 @@ GenServer.cast(pid, :increment)
 GenServer.cast(pid, :increment)
 
 IO.puts("not blocked!")
+Process.sleep(2000)
+IO.puts(GenServer.call(pid, :get_count))
 ```
 
 ### Your Turn
@@ -126,7 +128,29 @@ end
 </details>
 
 ```elixir
+defmodule Journal do
+  use GenServer
 
+  @impl
+  def init(_opts) do
+    {:ok, []}
+  end
+
+  @impl
+  def handle_cast({:add_entry, entry}, state) do
+    new_state = [entry | state]
+    {:noreply, new_state}
+  end
+end
+```
+
+```elixir
+{:ok, journal_pid} = GenServer.start_link(Journal, [])
+
+GenServer.cast(journal_pid, {:add_entry, "first entry"})
+GenServer.cast(journal_pid, {:add_entry, "second entry"})
+
+:sys.get_state(journal_pid)
 ```
 
 ## Process
@@ -220,6 +244,27 @@ end
 Uncomment and evaluate the code below, and you'll see the `MisbehavingGenServer` crashes, because it tries to send itself a message. Re-comment it when finished.
 
 ```elixir
+# defmodule MisbehavingGenServer do
+#   use GenServer
+
+#   def init(_opts) do
+#     {:ok, []}
+#   end
+
+#   def handle_call(:message, _from, state) do
+#     GenServer.call(self(), :talking_to_myself)
+#     IO.puts("Received a message!")
+#     {:reply, state}
+#   end
+
+#   def handle_call(:talking_to_myself, _from, state) do
+#     IO.puts("Sent a message to myself")
+#     {:reply, state}
+#   end
+# end
+```
+
+```elixir
 # {:ok, pid} = GenServer.start_link(MisbehavingGenServer, [])
 
 # GenServer.call(pid, :message)
@@ -285,7 +330,35 @@ end
 </details>
 
 ```elixir
+defmodule DecrementingCounter do
+  use GenServer
 
+  @impl
+  def init(_opts) do
+    scheduleDec()
+    {:ok, 108}
+  end
+
+  @impl
+  def handle_info(:decrement, state) do
+    scheduleDec()
+    {:noreply, state - 1}
+  end
+
+  defp scheduleDec() do
+    Process.send_after(self(), :decrement, 500)
+  end
+end
+
+{:ok, decPid} = GenServer.start_link(DecrementingCounter, [])
+```
+
+```elixir
+:sys.get_state(decPid)
+```
+
+```elixir
+:sys.suspend(decPid)
 ```
 
 ## Thought Provoking Questions
