@@ -1,4 +1,6 @@
-# Stack Server
+# Untitled notebook
+
+## Stack Server
 
 ```elixir
 Mix.install([
@@ -7,12 +9,12 @@ Mix.install([
 ])
 ```
 
-## Navigation
+### Navigation
 
 [Return Home](../start.livemd)<span style="padding: 0 30px"></span>
 [Report An Issue](https://github.com/DockYard-Academy/beta_curriculum/issues/new?assignees=&labels=&template=issue.md&title=)
 
-## Stack
+### Stack
 
 A [stack](https://en.wikipedia.org/wiki/Stack_(abstract_data_type)) is a data structure which can push elements onto the top of the stack and pop them off of the top of the stack.
 We're going to create a `Stack` process which stores a stack as a list of elements in it's state. We should be able to send a `{:push, element}` message and a `:pop` message
@@ -141,44 +143,66 @@ defmodule Stack do
 
   ## Examples
 
-```elixir
+```
+
 defmodule Stack do
   use GenServer
 
-  @impl
+@impl
   def init(_opts), do: {:ok, []}
 
-  def handle_call(:pop, _, []) do
-    {:reply, nil, []}
-  end
+def handle_call(:pop, _, []) do
 
-  def handle_call(:pop, _, [head | tail]) do
-    {:reply, head, tail}
-  end
-
-  def handle_call({:push, obj}, _, state) do
-    new_state = [obj | state]
-    {:reply, new_state, new_state}
-  end
-end
+```
+{:reply, nil, []}
 ```
 
-```elixir
+end
+
+def handle_call(:pop, _, [head | tail]) do
+
+```
+{:reply, head, tail}
+```
+
+end
+
+def handle_call({:push, obj}, _, state) do
+
+```
+new_state = [obj | state]
+{:reply, new_state, new_state}
+```
+
+end
+end
+
+```
+
+```
+
 {:ok, stack_pid} = GenServer.start_link(Stack, [])
 
-# GenServer.call(stack_pid, {:push, 1})
-# [1]
+## GenServer.call(stack_pid, {:push, 1})
 
-# GenServer.call(stack_pid, {:push, 2})
-# [2, 1]
+## [1]
+
+## GenServer.call(stack_pid, {:push, 2})
+
+## [2, 1]
+
 ```
 
-```elixir
+```
+
 GenServer.call(stack_pid, {:push, 4})
+
 ```
 
-```elixir
+```
+
 GenServer.call(stack_pid, :pop)
+
 ```
 
 ## Commit Your Progress
@@ -187,11 +211,13 @@ Run the following in your command line from the curriculum folder to track and s
 Ensure that you do not already have undesired or unrelated changes by running `git status` or by checking the source control tab in Visual Studio Code.
 
 ```
+
 $ git checkout main
 $ git checkout -b exercise-stack_server
 $ git add .
 $ git commit -m "finish stack server exercise"
 $ git push origin exercise-stack_server
+
 ```
 
 **DockYard Academy Students Only:**
@@ -205,3 +231,4 @@ If you are interested in joining the next academy cohort, [sign up here](https:/
 | Previous                                           | Next                                                             |
 | -------------------------------------------------- | ---------------------------------------------------------------: |
 | [Generic Server](../reading/generic_server.livemd) | [Traffic Light Server](../exercises/traffic_light_server.livemd) |
+```
