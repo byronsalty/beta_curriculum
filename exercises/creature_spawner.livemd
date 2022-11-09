@@ -113,6 +113,7 @@ defmodule Monster do
   def start_link(opts) do
     # IO.inspect/2 to observe when a `Monster` process starts.
     IO.inspect(opts, label: "Monster Started")
+    GenServer.start_link(__MODULE__, opts)
   end
 
   @doc """
@@ -128,6 +129,7 @@ defmodule Monster do
       %{health: 70}
   """
   def attack(monster_pid, amount) do
+    GenServer.cast(monster_pid, {:attack, amount})
   end
 
   @doc """
@@ -140,6 +142,7 @@ defmodule Monster do
       100
   """
   def health(monster_pid) do
+    GenServer.call(monster_pid, :health)
   end
 
   @doc """
@@ -154,6 +157,7 @@ defmodule Monster do
   """
   @impl true
   def init(_opts) do
+    {:ok, %{health: 100}}
   end
 
   @doc """
@@ -173,7 +177,14 @@ defmodule Monster do
       ** (RuntimeError) dying!
   """
   @impl true
-  def handle_cast({:attack, damage}, state) do
+  def handle_cast({:attack, damage}, %{health: old_amt}) do
+    remaining = old_amt - damage
+
+    if remaining <= 0 do
+      raise "dying!"
+    else
+      {:noreply, %{health: remaining}}
+    end
   end
 
   @doc """
@@ -187,6 +198,7 @@ defmodule Monster do
   """
   @impl true
   def handle_call(:health, _from, state) do
+    {:reply, state, state}
   end
 end
 ```
@@ -240,7 +252,22 @@ Supervisor.start_link(children, strategy: :one_for_one)
 Enter your solution below.
 
 ```elixir
+children = [
+  %{
+    id: :monster1,
+    start: {Monster, :start_link, [[]]}
+  },
+  %{
+    id: :monster2,
+    start: {Monster, :start_link, [[]]}
+  },
+  %{
+    id: :monster3,
+    start: {Monster, :start_link, [[]]}
+  }
+]
 
+{:ok, pid} = Supervisor.start_link(children, strategy: :one_for_one)
 ```
 
 Call `Monster.attack/1` on your monster processes to ensure they are restarted.
