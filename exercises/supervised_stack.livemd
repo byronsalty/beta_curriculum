@@ -107,6 +107,13 @@ children = [
   {Stack, []}
 ]
 
+children = [
+  %{
+    id: stack1,
+    start: {Stack, :start_link, [[]]}
+  }
+]
+
 Supervisor.start_link(children, strategy: :one_for_one)
 ```
 

@@ -270,6 +270,10 @@ children = [
 {:ok, pid} = Supervisor.start_link(children, strategy: :one_for_one)
 ```
 
+```elixir
+Kino.Process.sup_tree(pid)
+```
+
 Call `Monster.attack/1` on your monster processes to ensure they are restarted.
 
 <details style="background-color: lightgreen; padding: 1rem; margin: 1rem 0;">
@@ -283,7 +287,13 @@ Monster.attack(:monster1, 110)
 </details>
 
 ```elixir
+m1 = :c.pid(0, 242, 0)
+Monster.attack(m1, 150)
+Monster.health(m1)
+```
 
+```elixir
+Supervisor.which_children(pid)
 ```
 
 ## Bonus: Hero
@@ -324,7 +334,25 @@ end
 </details>
 
 ```elixir
+defmodule Hero do
+  use GenServer
 
+  @impl true
+  def init(super_pid) do
+    :timer.send_interval(1000, self(), :attack)
+    {:ok, super_pid}
+  end
+
+  @impl true
+  def handle_info(:attack, super_pid) do
+    Supervisor.which_children(super_pid)
+    |> Enum.map(fn {_, pid, _, _} ->
+      Monster.attack(pid, Enum.random(1..10))
+    end)
+
+    {:noreply, super_pid}
+  end
+end
 ```
 
 Start the `Hero` process with three other `Monster` processes in the same supervisor. Make the supervisor a named supervisor so you can find all of its child processes with [Supervisor.which_children/1](https://hexdocs.pm/elixir/Supervisor.html#which_children/1).
@@ -358,7 +386,7 @@ children = [
 </details>
 
 ```elixir
-
+{:ok, hero} = GenServer.start_link(Hero, pid)
 ```
 
 Use [Kino.Process.sup_tree/2](https://hexdocs.pm/kino/Kino.Process.html#sup_tree/2) to visualize the processes under your named supervisor.
@@ -373,7 +401,7 @@ Kino.Process.sup_tree(supervisor)
 </details>
 
 ```elixir
-
+Kino.Process.sup_tree(pid)
 ```
 
 For improved observability, create a function that will print the health value for each `Monster` process under the named supervisor.
@@ -392,7 +420,10 @@ end)
 </details>
 
 ```elixir
-
+Supervisor.which_children(pid)
+|> Enum.map(fn {_, pid, _, _} ->
+  Monster.health(pid)
+end)
 ```
 
 ## Commit Your Progress
