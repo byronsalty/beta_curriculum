@@ -401,7 +401,7 @@ Kino.Process.sup_tree(supervisor)
 </details>
 
 ```elixir
-Kino.Process.sup_tree(pid)
+Kino.Process.sup_tree(pid, direction: :left_right)
 ```
 
 For improved observability, create a function that will print the health value for each `Monster` process under the named supervisor.
