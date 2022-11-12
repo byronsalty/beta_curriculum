@@ -56,13 +56,37 @@ Copy the code below into your `Stack` module.
 defmodule Stack do
   use GenServer
 
-  def start_link(_opts) do
+  def start_link(initial_state \\ []) do
+    GenServer.start_link(__MODULE__, initial_state)
   end
 
   def push(pid, element) do
+    GenServer.call(pid, {:push, element})
   end
 
   def pop(pid) do
+    GenServer.call(pid, :pop)
+  end
+
+  @impl true
+  def init(initial_state) do
+    {:ok, initial_state}
+  end
+
+  @impl true
+  def handle_call(:pop, _, []) do
+    {:reply, nil, []}
+  end
+
+  @impl true
+  def handle_call(:pop, _, [top | rest]) do
+    {:reply, top, rest}
+  end
+
+  @impl true
+  def handle_call({:push, item}, _, state) do
+    new_state = [item | state]
+    {:reply, new_state, new_state}
   end
 end
 ```
@@ -70,26 +94,70 @@ end
 Then copy the following code into the associated test file for the `Stack` module.
 
 ```elixir
+ExUnit.start(auto_run: false)
+
 defmodule StackTest do
   use ExUnit.Case
 
   describe "start_link/1" do
-    test "with no configuration"
-    test "with a default state"
+    test "with no configuration default" do
+      {:ok, pid} = Stack.start_link()
+      assert Stack.pop(pid) == nil
+    end
+
+    test "with no configuration" do
+      {:ok, pid} = Stack.start_link([])
+      assert Stack.pop(pid) == nil
+    end
+
+    test "with default state" do
+      {:ok, pid} = Stack.start_link([:starter])
+      assert Stack.pop(pid) == :starter
+    end
   end
 
   describe "push/2" do
-    test "an element onto an empty stack"
-    test "an element onto a stack with one element"
-    test "an element onto a stack with multiple elements"
+    test "an element onto an empty stack" do
+      {:ok, pid} = Stack.start_link()
+      assert Stack.pop(pid) == nil
+      assert Stack.push(pid, :first) == [:first]
+    end
+
+    test "an element onto a stack with one element" do
+      {:ok, pid} = Stack.start_link([:first])
+      assert Stack.push(pid, :second) == [:second, :first]
+    end
+
+    test "an element onto a stack with multiple elements" do
+      {:ok, pid} = Stack.start_link([:third, :second, :first])
+      assert Stack.push(pid, :fourth) == [:fourth, :third, :second, :first]
+      assert Stack.push(pid, :fifth) == [:fifth, :fourth, :third, :second, :first]
+    end
   end
 
   describe "pop/1" do
-    test "an empty stack"
-    test "a stack with one element"
-    test "a stack with multiple elements"
+    test "an empty stack" do
+      {:ok, pid} = Stack.start_link()
+      assert Stack.pop(pid) == nil
+    end
+
+    test "a stack with one element" do
+      {:ok, pid} = Stack.start_link([:starter])
+      assert Stack.pop(pid) == :starter
+      assert Stack.pop(pid) == nil
+    end
+
+    test "a stack with multiple elements" do
+      {:ok, pid} = Stack.start_link([:third, :second, :first])
+      assert Stack.pop(pid) == :third
+      assert Stack.pop(pid) == :second
+      assert Stack.pop(pid) == :first
+      assert Stack.pop(pid) == nil
+    end
   end
 end
+
+ExUnit.run()
 ```
 
 ## Bonus: GitHub Repository
