@@ -29,7 +29,7 @@ Use your API to visit the `https://api.spoonacular.com/recipes/complexSearch?api
 Use [HTTPoison](https://hexdocs.pm/httpoison/HTTPoison.html) to retrieve the same JSON data from the `https://api.spoonacular.com/recipes/complexSearch?apiKey=API_KEY` URL you visited in the browser. Then use [Poison](https://hexdocs.pm/poison/Poison.html) to decode the JSON response into an Elixir data structure.
 
 ```elixir
-api_key = "2db56f706ab142fbaf997669dda5c799"
+api_key = ""
 
 # {:ok, response} = HTTPoison.get("https://api.spoonacular.com/recipes/complexSearch?apiKey=#{api_key}")
 # response.status_code
