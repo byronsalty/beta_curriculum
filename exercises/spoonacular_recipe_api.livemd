@@ -13,6 +13,10 @@ Mix.install([
 [Return Home](../start.livemd)<span style="padding: 0 30px"></span>
 [Report An Issue](https://github.com/DockYard-Academy/beta_curriculum/issues/new?assignees=&labels=&template=issue.md&title=)
 
+```elixir
+
+```
+
 ## Spoonacular Recipe API
 
 [Spoonacular](https://spoonacular.com/) is a popular food API.
@@ -28,7 +32,16 @@ Use your API to visit the `https://api.spoonacular.com/recipes/complexSearch?api
 Use [HTTPoison](https://hexdocs.pm/httpoison/HTTPoison.html) to retrieve the same JSON data from the `https://api.spoonacular.com/recipes/complexSearch?apiKey=API_KEY` URL you visited in the browser. Then use [Poison](https://hexdocs.pm/poison/Poison.html) to decode the JSON response into an Elixir data structure.
 
 ```elixir
+api_key = "2db56f706ab142fbaf997669dda5c799"
 
+# {:ok, response} = HTTPoison.get("https://api.spoonacular.com/recipes/complexSearch?apiKey=#{api_key}")
+# response.status_code
+
+response =
+  case HTTPoison.get("https://api.spoonacular.com/recipes/complexSearch?apiKey=#{api_key}") do
+    {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+      Poison.decode!(body)
+  end
 ```
 
 ## Commit Your Progress

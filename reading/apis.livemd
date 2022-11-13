@@ -4,7 +4,8 @@
 Mix.install([
   {:youtube, github: "brooklinjazz/youtube"},
   {:hidden_cell, github: "brooklinjazz/hidden_cell"},
-  {:httpoison, "~> 1.8"}
+  {:httpoison, "~> 1.8"},
+  {:poison, "~> 5.0"}
 ])
 ```
 
@@ -224,7 +225,7 @@ Use your API key and valid latitude/longitude coordinates to make a successful r
 ```elixir
 lat = 35
 lon = 139
-api_key = ""
+api_key = "f002520152aad85b807944d24f1c3aed"
 
 {:ok, response} =
   HTTPoison.get(

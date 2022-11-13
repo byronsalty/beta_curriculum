@@ -26,7 +26,34 @@ You're going to create a named process `Games.GlobalScoreTracker` which will tra
 
 Create a full suite of test cases for all of the features described below.
 
-<!-- livebook:{"break_markdown":true} -->
+```elixir
+defmodule Games.GlobalScoreTracker do
+  use GenServer
+
+  def get_something() do
+    GenServer.call(Games.GlobalScoreTracker, :hi)
+  end
+
+  def start_link(_opts) do
+    GenServer.start_link(__MODULE__, [])
+  end
+
+  @impl true
+  def init(s) do
+    {:ok, s}
+  end
+
+  @impl true
+  def handle_call(:hi, _, state) do
+    {:reply, :there, state}
+  end
+end
+
+opts = [name: Games.GlobalScoreTracker]
+GenServer.start_link(Games.GlobalScoreTracker, [], opts)
+
+Games.GlobalScoreTracker.get_something()
+```
 
 ### Score
 
