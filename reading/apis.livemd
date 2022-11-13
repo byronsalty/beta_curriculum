@@ -195,7 +195,7 @@ Private APIs require an API key to communicate with them. This key is then inclu
 For example, the [Open Weather API](https://openweathermap.org/) requires an API key when making a GET request. The server returns a `401` unauthorized response without the correct API key.
 
 ```elixir
-api_key = "f002520152aad85b807944d24f1c3aed"
+api_key = ""
 
 HTTPoison.get("https://api.openweathermap.org/data/2.5/weather?lat=35&lon=139&appid=#{api_key}")
 ```
@@ -225,7 +225,7 @@ Use your API key and valid latitude/longitude coordinates to make a successful r
 ```elixir
 lat = 35
 lon = 139
-api_key = "f002520152aad85b807944d24f1c3aed"
+api_key = ""
 
 {:ok, response} =
   HTTPoison.get(
