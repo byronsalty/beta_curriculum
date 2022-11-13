@@ -195,7 +195,7 @@ Private APIs require an API key to communicate with them. This key is then inclu
 For example, the [Open Weather API](https://openweathermap.org/) requires an API key when making a GET request. The server returns a `401` unauthorized response without the correct API key.
 
 ```elixir
-api_key = ""
+api_key = "f002520152aad85b807944d24f1c3aed"
 
 HTTPoison.get("https://api.openweathermap.org/data/2.5/weather?lat=35&lon=139&appid=#{api_key}")
 ```
@@ -236,7 +236,8 @@ api_key = "f002520152aad85b807944d24f1c3aed"
 Once you are sure the above works correctly, use [Poison.decode/2](https://hexdocs.pm/poison/Poison.html#decode/2) to decode the `response` into an Elixir map.
 
 ```elixir
-response
+%HTTPoison.Response{status_code: 200, body: body} = response
+map = Poison.decode!(body)
 ```
 
 ## Commit Your Progress
