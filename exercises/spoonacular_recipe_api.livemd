@@ -4,7 +4,8 @@
 Mix.install([
   {:youtube, github: "brooklinjazz/youtube"},
   {:hidden_cell, github: "brooklinjazz/hidden_cell"},
-  {:httpoison, "~> 1.8"}
+  {:httpoison, "~> 1.8"},
+  {:poison, "~> 5.0"}
 ])
 ```
 
@@ -12,10 +13,6 @@ Mix.install([
 
 [Return Home](../start.livemd)<span style="padding: 0 30px"></span>
 [Report An Issue](https://github.com/DockYard-Academy/beta_curriculum/issues/new?assignees=&labels=&template=issue.md&title=)
-
-```elixir
-
-```
 
 ## Spoonacular Recipe API
 
