@@ -137,7 +137,30 @@ GenServer.call(cache, {:get, :key1})
 ```elixir
 defmodule Cache do
   use GenServer
+
+  @impl true
+  def init(state) do
+    {:ok, state}
+  end
+
+  @impl true
+  def handle_cast({:set, {key, val}}, state) do
+    {:noreply, Map.put(state, key, val)}
+  end
+
+  @impl true
+  def handle_call({:get, key}, _from, state) do
+    {:reply, Map.get(state, key)}
+  end
 end
+```
+
+```elixir
+cache = GenServer.start_link(Cache, %{})
+GenServer.cast(cache, {:set, {:key1, "value"}})
+
+GenServer.call(cache, {:get, :key1})
+{:ok, "value"}
 ```
 
 ## Agent
