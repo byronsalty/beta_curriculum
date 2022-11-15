@@ -24,7 +24,9 @@ We've provided an `Image` module which simulates this process.
 defmodule Image do
   def convert(file) do
     # simulating expensive processing
-    Process.sleep(2000)
+    random_wait = Enum.random([1000, 2000, 3000, 4000])
+    Process.sleep(random_wait)
+    IO.puts("for #{file} waiting #{random_wait}")
     [file_name, _ext] = String.split(file, ".")
     file_name <> ".jpeg"
   end
@@ -57,17 +59,24 @@ When complete, rather than taking `8` seconds to convert `4` files, it should ta
 defmodule MultiImage do
   # Optimize the function below using concurrency. Notice that it currently takes 8 seconds to run.
   def convert(files) do
-    Enum.map(files, &Image.convert/1)
+    tasks =
+      Enum.map(files, fn each ->
+        Task.async(fn -> Image.convert(each) end)
+      end)
+
+    Task.await_many(tasks)
   end
 end
 
 # Ensure the result matches the following
-MultiImage.convert(["a.png", "b.png", "c.png", "d.png"]) == [
-  "a.jpeg",
-  "b.jpeg",
-  "c.jpeg",
-  "d.jpeg"
-]
+# MultiImage.convert(["a.png", "b.png", "c.png", "d.png"]) == [
+#   "a.jpeg",
+#   "b.jpeg",
+#   "c.jpeg",
+#   "d.jpeg"
+# ]
+
+MultiImage.convert(["a.png", "b.png", "c.png", "d.png"])
 ```
 
 ## Commit Your Progress
