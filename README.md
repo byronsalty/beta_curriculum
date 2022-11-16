@@ -216,6 +216,8 @@ The curriculum is still a rough outline subject to change and feedback. see [sta
 * Testing With ExUnit
 * ExUnit With Mix Projects
 * Documentation and Static Analysis
+* Executables
+* Group Project
 ## OTP and Advanced Syntax
 * Protocols
 * Recursion
@@ -228,9 +230,8 @@ The curriculum is still a rough outline subject to change and feedback. see [sta
 * Supervisor Basics and Fault Tolerance
 * Testing GenServers
 * Mix Projects & Processes
-* State Management With Agents
 * Concurrency With Tasks
-* Erlang-Term Storage (ETS)
+* State Management With Agents and ETS
 * Registry
 * Files and Data Validation
 ## Web Servers and Phoenix
