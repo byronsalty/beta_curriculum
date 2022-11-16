@@ -27,6 +27,24 @@ We can also keep only the information we want, rather than all of the data retur
 
 ```elixir
 {:ok, response} = HTTPoison.get("https://pokeapi.co/api/v2/pokemon/charmander")
+
+# response =
+#   case HTTPoison.get("https://pokeapi.co/api/v2/pokemon/charmander") do
+#     {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+#       Poison.decode!(body)
+#   end
+```
+
+```elixir
+data =
+  case HTTPoison.get("https://pokeapi.co/api/v2/pokemon/charmander") do
+    {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+      Poison.decode!(body)
+  end
+```
+
+```elixir
+data["types"]
 ```
 
 In the `Pokemon.from_response/1` function,
@@ -44,10 +62,29 @@ Enter your solution below.
 
 ```elixir
 defmodule Pokemon do
-  defstruct [:name, :weight, :height]
+  defstruct [:name, :weight, :height, :types]
 
-  def from_response(response) do
-    nil
+  def from_response(http_response) do
+    response =
+      case http_response do
+        %HTTPoison.Response{status_code: 200, body: body} ->
+          Poison.decode!(body)
+
+        _ ->
+          IO.puts("no match in case")
+      end
+
+    types =
+      Enum.map(response["types"], fn t ->
+        t["type"]["name"]
+      end)
+
+    %Pokemon{
+      name: response["name"],
+      weight: response["weight"],
+      height: response["height"],
+      types: types
+    }
   end
 end
 
