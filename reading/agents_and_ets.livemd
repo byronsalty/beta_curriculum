@@ -27,49 +27,9 @@ Now we're going to learn about managing state using [Agent](https://hexdocs.pm/e
 [Agent](https://hexdocs.pm/elixir/Agent.html)s are a wrapper around state. They are less fully-featured and simpler than a [GenServer](https://hexdocs.pm/elixir/GenServer.html). Unlike [GenServer](https://hexdocs.pm/elixir/GenServer.html)s, they do not send and receive messages. Instead, the [Agent](https://hexdocs.pm/elixir/Agent.html) module provides functions such as [Agent.get/3](https://hexdocs.pm/elixir/Agent.html#get/3) and [Agent.update/3](https://hexdocs.pm/elixir/Agent.html#update/3) to get and update the [Agent](https://hexdocs.pm/elixir/Agent.html) process's state.
 
 ```elixir
-<<<<<<< HEAD:reading/caching_agent_ets.livemd
-defmodule Cache do
-  use GenServer
-
-  @impl true
-  def init(state) do
-    {:ok, state}
-  end
-
-  @impl true
-  def handle_cast({:set, {key, val}}, state) do
-    {:noreply, Map.put(state, key, val)}
-  end
-
-  @impl true
-  def handle_call({:get, key}, _from, state) do
-    {:reply, Map.get(state, key)}
-  end
-end
-```
-
-```elixir
-cache = GenServer.start_link(Cache, %{})
-GenServer.cast(cache, {:set, {:key1, "value"}})
-
-GenServer.call(cache, {:get, :key1})
-{:ok, "value"}
-```
-
-## Agent
-
-We don't necessarily need a [GenServer](https://hexdocs.pm/elixir/GenServer.html) when creating a simple cache.
-
-For a more lightweight solution, we can use an [Agent](https://hexdocs.pm/elixir/Agent.html).
-An [Agent](https://hexdocs.pm/elixir/Agent.html) is a simple wrapper around state.
-
-We can start an [Agent](https://hexdocs.pm/elixir/Agent.html) process with `start_link/2`.
-
-=======
 {:ok, counter_pid} = Agent.start_link(fn -> 0 end)
 ```
 
->>>>>>> main:reading/agents_and_ets.livemd
 ```elixir
 Agent.update(counter_pid, fn state -> state + 1 end)
 ```
