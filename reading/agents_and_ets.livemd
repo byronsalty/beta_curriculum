@@ -31,11 +31,17 @@ Now we're going to learn about managing state using [Agent](https://hexdocs.pm/e
 ```
 
 ```elixir
-Agent.update(counter_pid, fn state -> state + 1 end)
+Agent.update(counter_pid, fn state ->
+  Process.sleep(1000)
+  state + 1
+end)
+
+IO.puts("after")
 ```
 
 ```elixir
 Agent.get(counter_pid, fn state -> state end)
+IO.puts("after")
 ```
 
 Often, we'll put Agent functions into a module to abstract how state is stored and manipulated and only expose the desired functionality.
@@ -62,6 +68,29 @@ end
 :ok = Counter.increment(counter_pid)
 :ok = Counter.increment(counter_pid)
 2 = Counter.get_count(counter_pid)
+```
+
+```elixir
+defmodule CounterNamed do
+  use Agent
+
+  def start_link(_opts) do
+    Agent.start_link(fn -> 0 end, name: __MODULE__)
+  end
+
+  def increment() do
+    Agent.update(__MODULE__, fn state -> state + 1 end)
+  end
+
+  def get_count() do
+    Agent.get(__MODULE__, fn state -> state end)
+  end
+end
+
+CounterNamed.start_link([])
+CounterNamed.increment()
+CounterNamed.increment()
+CounterNamed.get_count()
 ```
 
 Anything you can accomplish with an [Agent](https://hexdocs.pm/elixir/Agent.html), you could instead accomplish with a [GenServer](https://hexdocs.pm/elixir/GenServer.html). However, using an [Agent](https://hexdocs.pm/elixir/Agent.html) is more lightweight and effective if all you need is to manage state.
@@ -98,6 +127,10 @@ Livebook allows us to view the `:ets` process as a table. Let's start a new `:et
 table = :ets.new(:example_table, [])
 ```
 
+```elixir
+IO.inspect(table)
+```
+
 We can then insert values into the table with `:ets.insert/2`. We insert
 values as `{key, value}` tuples.
 
@@ -131,7 +164,7 @@ Now we can insert values to the table using the atom name
 The same goes for looking up values.
 
 ```elixir
-:ets.lookup(:my_table, :key)
+:ets.lookup(:my_table, :missing) || 0
 ```
 
 ### Your Turn
@@ -147,7 +180,17 @@ secret identities.
 ```
 
 ```elixir
+:ets.new(:super_heros, [:named_table])
+```
 
+```elixir
+:ets.insert(:super_heros, {:superman, %{name: "Superman", secret: "Clark Kent"}})
+:ets.insert(:super_heros, {:spiderman, %{name: "Spider-man", secret: "Peter Parker"}})
+```
+
+```elixir
+[{key, hero}] = :ets.lookup(:super_heros, :superman)
+hero
 ```
 
 ## ETS Configuration
@@ -266,7 +309,16 @@ end)
 </details>
 
 ```elixir
+private = :ets.new(:private_table, [:private, :ordered_set])
+:ets.insert(private, {:key1, "value1"})
 
+Task.start(fn ->
+  :ets.insert(private, {:key2, "value2"}) |> IO.inspect(label: "task output")
+end)
+
+:ets.insert(private, {:key3, "value3"})
+
+:ets.lookup(private, :key2)
 ```
 
 ## Race Conditions

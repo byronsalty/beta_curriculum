@@ -75,6 +75,7 @@ defmodule Inventory do
       true
   """
   def new() do
+    :ets.new(:inventory, [:duplicate_bag])
   end
 
   @doc """
@@ -87,6 +88,10 @@ defmodule Inventory do
       0
   """
   def get_quantity(ref, item) do
+    results =
+      :ets.lookup(ref, item)
+      |> Enum.map(fn {_, cnt} -> cnt end)
+      |> Enum.reduce(0, fn x, acc -> x + acc end)
   end
 
   @doc """
@@ -100,8 +105,25 @@ defmodule Inventory do
       true
   """
   def store(ref, item, quantity) do
+    :ets.insert(ref, {item, quantity})
   end
 end
+```
+
+```elixir
+ref = Inventory.new()
+Inventory.store(ref, :apples, 5)
+Inventory.get_quantity(ref, :apples) |> IO.inspect()
+
+Inventory.store(ref, :pears, 5)
+Inventory.get_quantity(ref, :pears) |> IO.inspect()
+
+Inventory.store(ref, :apples, 15)
+Inventory.get_quantity(ref, :apples) |> IO.inspect()
+```
+
+```elixir
+:ets.delete(:inventory)
 ```
 
 ## Bonus: Warehouse

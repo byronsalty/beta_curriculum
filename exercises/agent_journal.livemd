@@ -69,7 +69,8 @@ defmodule Journal do
 
       iex> {:ok, pid} = Journal.start_link(entries: ["Entry1", "Entry 2"])
   """
-  def start_link(_opts) do
+  def start_link(state) do
+    Agent.start_link(fn -> state end)
   end
 
   @doc """
@@ -102,6 +103,7 @@ defmodule Journal do
       ["Entry 2", "Entry 1"]
   """
   def all_entries(pid, opts \\ []) do
+    Agent.get(pid, fn entries -> entries end)
   end
 
   @doc """
@@ -118,8 +120,16 @@ defmodule Journal do
     ["Entry 1", "Entry 2"]
   """
   def add_entry(pid, entry) do
+    Agent.update(pid, fn entries -> [entry | entries] end)
   end
 end
+```
+
+```elixir
+{:ok, pid} = Journal.start_link(["Entry 2", "Entry 1"])
+Journal.all_entries(pid, order: :asc) |> IO.inspect()
+Journal.add_entry(pid, "Supe") |> IO.inspect()
+Journal.all_entries(pid, order: :asc) |> IO.inspect()
 ```
 
 ## Bonus: Advanced Journal
@@ -135,6 +145,16 @@ example_entry = %{
   created_at: DateTime.utc_now(),
   updated_at: DateTime.utc_now()
 }
+```
+
+```elixir
+# defmodule Fun do
+#   def hi(e) do
+#     e[:title]
+#   end
+# end
+
+# Fun.hi(%{title: "foo"})
 ```
 
 <details style="background-color: lightgreen; padding: 1rem; margin: 1rem 0;">
@@ -227,7 +247,14 @@ defmodule AdvancedJournal do
 
       iex> {:ok, pid} = AdvancedJournal.start_link(entries: [%{title: "Entry 1", content: "Entry 1 Content"}])
   """
-  def start_link(opts) do
+  def start_link(start_entries \\ []) do
+    next_id = Enum.count(start_entries)
+
+    entries =
+      Enum.zip([start_entries, 0..next_id])
+      |> Enum.map(fn {entry, id} -> form_entry(id, entry) end)
+
+    Agent.start_link(fn -> {entries, next_id} end, [])
   end
 
   @doc """
@@ -279,6 +306,14 @@ defmodule AdvancedJournal do
       ..>] = AdvancedJournal.all_entries(pid, order: :desc)
   """
   def all_entries(pid, opts \\ []) do
+    Agent.get(pid, fn {entries, _} -> entries end)
+  end
+
+  defp form_entry(id, entry, created_at \\ DateTime.utc_now()) do
+    title = entry[:title]
+    content = entry[:content]
+    now = DateTime.utc_now()
+    %{id: id, title: title, content: content, created_at: created_at, updated_at: now}
   end
 
   @doc """
@@ -304,6 +339,10 @@ defmodule AdvancedJournal do
       ..>] = AdvancedJournal.all_entries(pid)
   """
   def add_entry(pid, attrs) do
+    Agent.update(pid, fn {entries, next_id} ->
+      entry = form_entry(next_id, attrs)
+      {[entry | entries], next_id + 1}
+    end)
   end
 
   @doc """
@@ -317,6 +356,12 @@ defmodule AdvancedJournal do
       iex> [%{id: 0, title: "Updated Title", content: "Updated Content", created_at: _, updated_at: _}] = AdvancedJournal.all_entries(pid)
   """
   def update_entry(pid, id, attrs) do
+    Agent.update(pid, fn {entries, next_id} ->
+      entry = Enum.find(entries, fn x -> x[:id] == id end)
+      remaining = Enum.reject(entries, fn x -> x[:id] == id end)
+      updated_entry = form_entry(id, attrs, entry[:created_at])
+      {[updated_entry | remaining], next_id}
+    end)
   end
 
   @doc """
@@ -331,6 +376,20 @@ defmodule AdvancedJournal do
   def delete_entry(pid, id, attrs) do
   end
 end
+```
+
+```elixir
+{:ok, pid} = AdvancedJournal.start_link([%{title: "Title", content: "Content"}])
+
+AdvancedJournal.all_entries(pid) |> IO.inspect()
+
+AdvancedJournal.add_entry(pid, %{title: "Entry 1", content: "Entry 1"})
+
+AdvancedJournal.all_entries(pid) |> IO.inspect()
+
+AdvancedJournal.update_entry(pid, 0, %{title: "Entry New", content: "Entry New"})
+
+AdvancedJournal.all_entries(pid) |> IO.inspect()
 ```
 
 ## Commit Your Progress
