@@ -1,4 +1,4 @@
-# Tailwind Components
+# Common Components
 
 ```elixir
 Mix.install([
@@ -13,9 +13,11 @@ Mix.install([
 [Return Home](../start.livemd)<span style="padding: 0 30px"></span>
 [Report An Issue](https://github.com/DockYard-Academy/beta_curriculum/issues/new?assignees=&labels=&template=issue.md&title=)
 
-## Tailwind Components
+## Common Components
 
-You're going to use [Tailwind CSS](https://tailwindcss.com/docs/installation) and HTML to mimic a provided image. Create a new HTML file in your projects folder for each exercise.
+You're going to use HTML and CSS to replicate some styled components.
+
+Create an `.html` document or use [CodePen](https://codepen.io/pen/) to create these components.
 
 ```html
 <!doctype html>
@@ -23,7 +25,8 @@ You're going to use [Tailwind CSS](https://tailwindcss.com/docs/installation) an
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+  </style>
 </head>
 <body>
   <h1 class="text-3xl font-bold underline">
@@ -35,7 +38,7 @@ You're going to use [Tailwind CSS](https://tailwindcss.com/docs/installation) an
 
 ## Hoverable Outline Button
 
-Create a button with rounder corners, an underline, the `orange-500` background and `3xl` size text.
+Replicate the following outlined button as closely as you can.
 
 <!-- livebook:{"break_markdown":true} -->
 
@@ -43,7 +46,7 @@ Create a button with rounder corners, an underline, the `orange-500` background 
 
 <!-- livebook:{"break_markdown":true} -->
 
-On hover, the button should change the background color to `orange-500`.
+On hover, the button should change the `background-color`.
 
 <!-- livebook:{"break_markdown":true} -->
 
@@ -67,6 +70,15 @@ You can use https://picsum.photos/200/100 to retrieve a fake image:
 <img src="https://picsum.photos/200/100"></img>
 ```
 
+<details style="background-color: burlywood; padding: 1rem; margin: 1rem 0;">
+<summary>Hint</summary>
+
+You can create a rounded border using the `border-radius` and `border` declarations.
+
+You can create a horizontal bar using either the `<hr></hr>` element, or an empty `<div></div>
+
+</details>
+
 <!-- livebook:{"break_markdown":true} -->
 
 ![](images/card_component_light_mode.png)
@@ -78,10 +90,10 @@ Ensure that you do not already have undesired or unrelated changes by running `g
 
 ```
 $ git checkout main
-$ git checkout -b exercise-tailwind_css_components
+$ git checkout -b exercise-common_components
 $ git add .
-$ git commit -m "finish tailwind css components exercise"
-$ git push origin exercise-tailwind_css_components
+$ git commit -m "finish common components exercise"
+$ git push origin exercise-common_components
 ```
 
 Create a pull request to your forked `main` branch. Please do not create a pull request to the DockYard Academy repository as this will spam our PR tracker.
@@ -94,6 +106,6 @@ If you are interested in joining the next academy cohort, [sign up here](https:/
 
 ## Up Next
 
-| Previous                                       | Next                                   |
-| ---------------------------------------------- | -------------------------------------: |
-| [Tailwind CSS](../reading/tailwind_css.livemd) | [LiveView](../reading/liveview.livemd) |
+| Previous                               | Next                                       |
+| -------------------------------------- | -----------------------------------------: |
+| [HTML CSS](../reading/html_css.livemd) | [Home Page](../exercises/home_page.livemd) |
