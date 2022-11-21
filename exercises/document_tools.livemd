@@ -4,7 +4,8 @@
 Mix.install([
   {:kino, "~> 0.7.0", override: true},
   {:youtube, github: "brooklinjazz/youtube"},
-  {:hidden_cell, github: "brooklinjazz/hidden_cell"}
+  {:hidden_cell, github: "brooklinjazz/hidden_cell"},
+  {:benchee, "~> 1.1"}
 ])
 ```
 
@@ -78,6 +79,26 @@ defmodule Document do
     Documentation for `Document` module.
   """
 
+  use GenServer
+
+  @impl true
+  def init(_opts) do
+    {:ok, 0}
+  end
+
+  def handle_cast({:add, amt}, acc) do
+    {:noreply, acc + amt}
+  end
+
+  def handle_call(:get, _from, acc) do
+    {:reply, acc, acc}
+  end
+
+  def start_link(_opts) do
+    # GenServer.start_link(__MODULE__, 0, name: __MODULE__)
+    GenServer.start_link(__MODULE__, 0)
+  end
+
   @doc """
   Count the number of words in a document.
 
@@ -95,7 +116,60 @@ defmodule Document do
       iex> Document.word_count("word_count.txt")
       3
   """
+  def word_count6(file_name) do
+    val =
+      File.stream!(file_name, [], :line)
+      |> Stream.scan(0, fn line, acc ->
+        count_line(line) + acc
+      end)
+
+    # |> Stream.run()
+    # GenServer.call(__MODULE__, :get)
+  end
+
+  def word_count3(pid, file_name) do
+    stream =
+      File.stream!(file_name, [], 80)
+      |> Stream.map(fn x ->
+        amt =
+          String.trim(x)
+          |> String.split(" ", trim: true)
+          |> Enum.count()
+
+        GenServer.cast(pid, {:add, amt})
+      end)
+      |> Stream.run()
+
+    GenServer.call(pid, :get)
+  end
+
   def word_count(file_name) do
+    stream = File.stream!(file_name)
+
+    Stream.map(stream, fn x ->
+      String.trim(x)
+      |> String.split(" ", trim: true)
+      |> Enum.count()
+    end)
+    |> Enum.sum()
+  end
+
+  def word_count2(file_name) do
+    file = File.open!(file_name)
+    count = count_words(file)
+    File.close(file)
+    count
+  end
+
+  defp count_words(file, count \\ 0) do
+    case IO.read(file, :line) do
+      :eof ->
+        count
+
+      line ->
+        word_count_in_line = line |> String.split(" ", trim: true) |> Enum.count()
+        count_words(file, count + word_count_in_line)
+    end
   end
 
   @doc """
@@ -123,6 +197,40 @@ defmodule Document do
   def add_line_numbers(file_name) do
   end
 end
+```
+
+```elixir
+file_name = "ten.txt"
+
+{:ok, pid} = Document.start_link([])
+Document.word_count(file_name) |> IO.inspect()
+# Document.word_count2(file_name) |> IO.inspect()
+Document.word_count3(pid, file_name) |> IO.inspect()
+```
+
+```elixir
+GenServer.cast(pid, {:add, 5})
+```
+
+```elixir
+GenServer.call(pid, :get)
+```
+
+```elixir
+# File.write("word_count.txt", "one two three\nfour five six\nseven eight")
+{:ok, pid} = Document.start_link([])
+file_name = "five.txt"
+
+Benchee.run(
+  %{
+    "benchmark - stream w/ enum.sum" => fn -> Document.word_count(file_name) end,
+    "benchmark - example code" => fn -> Document.word_count2(file_name) end,
+    "benchmark - steam w/ genserver" => fn -> Document.word_count3(pid, file_name) end
+  },
+  memory_time: 2
+)
+
+# :timer.tc(fn -> Document.word_count("pg100.txt") end)
 ```
 
 ## Commit Your Progress

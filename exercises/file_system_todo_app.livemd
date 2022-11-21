@@ -55,6 +55,17 @@ defmodule TodoList do
   """
   @storage "todolist"
 
+  defp store(data) do
+    binary = :erlang.term_to_binary(data)
+    File.write(@storage, binary)
+  end
+
+  defp create_if_doesnt_exist do
+    if !File.exists?(@storage) do
+      store([])
+    end
+  end
+
   @doc """
   Retrieve the persistent todo list.
 
@@ -64,6 +75,9 @@ defmodule TodoList do
       []
   """
   def list do
+    create_if_doesnt_exist()
+    {:ok, binary} = File.read(@storage)
+    :erlang.binary_to_term(binary)
   end
 
   @doc """
@@ -81,6 +95,8 @@ defmodule TodoList do
       ["task 2", "task 1"]
   """
   def add(item) do
+    new_list = [item | list()]
+    store(new_list)
   end
 
   @doc """
@@ -94,8 +110,17 @@ defmodule TodoList do
       []
   """
   def complete(item) do
+    new_list = list() -- [item]
+    store(new_list)
   end
 end
+```
+
+```elixir
+TodoList.add("finish homework")
+TodoList.list() |> IO.inspect()
+TodoList.complete("finish homework")
+TodoList.list() |> IO.inspect()
 ```
 
 ## Commit Your Progress
