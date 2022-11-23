@@ -1,4 +1,4 @@
-# Phoenix
+# Phoenix 1.6
 
 ```elixir
 Mix.install([
@@ -17,11 +17,19 @@ Mix.install([
 
 Ensure you type the `ea` keyboard shortcut to evaluate all Elixir cells before starting. Alternatively you can evaluate the Elixir cells as you read.
 
+## Phoenix 1.6
+
+The latest release candidate for Phoenix 1.7 makes several significant changes to Phoenix such as the removal of [Phoenix.View](https://hexdocs.pm/phoenix_view/2.0.0/Phoenix.View.html#module-replaced-by-phoenix-component) and the addition of [Tailwind](./tailwind.livemd).
+
+While this course will focus on Phoenix version 1.7 and newer, many Phoenix projects will be 1.16 or older. So, to ensure students are comfortable using either version, this reading material covers how to work with older versions of Phoenix.
+
 ## Overview
 
 The [Phoenix Framework](https://phoenixframework.org/) is the most popular web development framework for Elixir. Using Phoenix, we can build rich interactive and real-time web applications quickly.
 
 [Chris McCord](http://chrismccord.com/), the creator of Phoenix, has an excellent video to demonstrate the power of Phoenix. Follow along and build a Twitter clone application in only 15 minutes.
+
+<!-- livebook:{"attrs":{"source":"YouTube.new(\"https://www.youtube.com/watch?v=MZvmYaFkNJI\")","title":"Build a real-time Twitter clone in 15 minutes with LiveView"},"chunks":null,"kind":"Elixir.HiddenCell","livebook_object":"smart_cell"} -->
 
 ```elixir
 YouTube.new("https://www.youtube.com/watch?v=MZvmYaFkNJI")
@@ -114,6 +122,12 @@ Install the `phx_new` dependency, which we'll use to generate a Phoenix project.
 $ mix archive.install hex phx_new
 ```
 
+After the release of Phoenix 1.7, you may need to specifically install Phoenix 1.6 using the following command.
+
+```sh
+$ mix archive.install hex phx_new 1.6.15
+```
+
 Phoenix projects reload the project anytime a project file changes.
 macOS and Windows users will have this feature by default, but students using GNU/Linux or Windows + WSL must install `inotify-tools` to use this feature.
 
@@ -131,11 +145,58 @@ We're going to create a counter project which stores an in-memory integer we can
 
 Run the following in your command line to create a new Phoenix project.
 
-```
-mix phx.new counter --no-ecto
+```sh
+$ mix phx.new counter
 ```
 
-The `--no-ecto` command omits files generated for using Ecto to connect to the database, which we will not need for this lesson.
+This should create the following files.
+
+```sh
+* creating counter/config/config.exs
+* creating counter/config/dev.exs
+* creating counter/config/prod.exs
+* creating counter/config/runtime.exs
+* creating counter/config/test.exs
+* creating counter/lib/counter/application.ex
+* creating counter/lib/counter.ex
+* creating counter/lib/counter_web/controllers/error_json.ex
+* creating counter/lib/counter_web/endpoint.ex
+* creating counter/lib/counter_web/router.ex
+* creating counter/lib/counter_web/telemetry.ex
+* creating counter/lib/counter_web.ex
+* creating counter/mix.exs
+* creating counter/README.md
+* creating counter/.formatter.exs
+* creating counter/.gitignore
+* creating counter/test/support/conn_case.ex
+* creating counter/test/test_helper.exs
+* creating counter/test/counter_web/controllers/error_json_test.exs
+* creating counter/lib/counter/repo.ex
+* creating counter/priv/repo/migrations/.formatter.exs
+* creating counter/priv/repo/seeds.exs
+* creating counter/test/support/data_case.ex
+* creating counter/lib/counter_web/controllers/error_html.ex
+* creating counter/test/counter_web/controllers/error_html_test.exs
+* creating counter/lib/counter_web/components/core_components.ex
+* creating counter/lib/counter_web/controllers/page_controller.ex
+* creating counter/lib/counter_web/controllers/page_html.ex
+* creating counter/lib/counter_web/controllers/page_html/home.html.heex
+* creating counter/test/counter_web/controllers/page_controller_test.exs
+* creating counter/lib/counter_web/components/layouts/root.html.heex
+* creating counter/lib/counter_web/components/layouts/app.html.heex
+* creating counter/lib/counter_web/components/layouts.ex
+* creating counter/assets/vendor/topbar.js
+* creating counter/lib/counter/mailer.ex
+* creating counter/lib/counter_web/gettext.ex
+* creating counter/priv/gettext/en/LC_MESSAGES/errors.po
+* creating counter/priv/gettext/errors.pot
+* creating counter/assets/css/app.css
+* creating counter/assets/js/app.js
+* creating counter/assets/tailwind.config.js
+* creating counter/priv/static/robots.txt
+* creating counter/priv/static/images/phoenix.png
+* creating counter/priv/static/favicon.ico
+```
 
 When prompted to install dependencies, type `Y` and press enter.
 This runs `mix deps.get` and `mix deps.compile`.
@@ -187,6 +248,33 @@ We can start the Phoenix web server by running the following command from the `/
 ```sh
 $ mix phx.server
 ```
+
+<!-- livebook:{"break_markdown":true} -->
+
+### Troubleshooting
+
+It's common to encounter issues when starting Phoenix for the first time. Typically students run into issues with [Postgres](https://www.postgresql.org/).
+
+Linux users will often encounter an issue where the `postgresql` service is not running. You can solve this problem with the following command.
+
+```
+sudo service postgresql start
+```
+
+Alternatively, you may have a permissions issue where the PostgreSQL user does not have the default username and password. You can resolve this by ensuring there is a `postgres` user with a `postgres` password.
+
+While not a magic solution, the following may solve your problem.
+
+```
+$ sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'postgres';"
+$ sudo server postgresql restart
+```
+
+These are two very common issues, however you may encounter an unexpected error. Please speak with your teacher if you encounter any issues to get support.
+
+<!-- livebook:{"break_markdown":true} -->
+
+### Phoenix Lifecycle
 
 When you start a Phoenix project, it runs the `Counter.Application.start/2` function in `lib/counter/application.ex`, which starts several workers under a supervisor.
 
@@ -1146,6 +1234,12 @@ Path helpers are dynamically defined functions that return the route for the cor
 
 For example, we can use the `Routes.counter_path(@conn, :update)` to return the `"/count"` route for the `CounterController.update/2` function.
 
+You can find the available routes (and therefore the available `Routes` functions) using the following command.
+
+```
+mix phx.routes
+```
+
 Let's replace the `"/count"` value in `lib/counter_web/templates/count/index.html.heex`.
 
 <!-- livebook:{"force_markdown":true} -->
@@ -1194,10 +1288,10 @@ Ensure that you do not already have undesired or unrelated changes by running `g
 
 ```
 $ git checkout main
-$ git checkout -b exercise-phoenix
+$ git checkout -b exercise-phoenix_1.6
 $ git add .
-$ git commit -m "finish phoenix section"
-$ git push origin exercise-phoenix
+$ git commit -m "finish phoenix 1.6 section"
+$ git push origin exercise-phoenix_1.6
 ```
 
 Create a pull request to your forked `main` branch. Please do not create a pull request to the DockYard Academy repository as this will spam our PR tracker.
@@ -1207,9 +1301,3 @@ Create a pull request to your forked `main` branch. Please do not create a pull 
 Notify your teacher by including `@BrooklinJazz` in your PR description to get feedback.
 
 If you are interested in joining the next academy cohort, [sign up here](https://academy.dockyard.com/) to receive more news when it is available.
-
-## Up Next
-
-| Previous                                     | Next                                                           |
-| -------------------------------------------- | -------------------------------------------------------------: |
-| [Web Servers](../reading/web_servers.livemd) | [Portfolio Home Page](../exercises/portfolio_home_page.livemd) |

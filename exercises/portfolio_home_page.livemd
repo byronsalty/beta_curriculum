@@ -50,6 +50,14 @@ Try to match the document above as best you can, however you may exercise your c
 * A paragraph that describes who you are and what you do.
 * An image (it can be any image if you would prefer to not use a personal photo)
 
+## Bonus: Projects
+
+Include a projects section on your portfolio project. Each project should be a card component which includes the project name, a description of the project, and a link to the project GitHub.
+
+Include all of the projects you have worked on in this course so far.
+
+Consider using paper/pencil or [Figma](https://www.figma.com/) to create a design of your projects section before implementing it.
+
 ## Commit Your Progress
 
 Run the following in your command line from the curriculum folder to track and save your progress in a Git commit.
@@ -73,6 +81,6 @@ If you are interested in joining the next academy cohort, [sign up here](https:/
 
 ## Up Next
 
-| Previous                             | Next                                               |
-| ------------------------------------ | -------------------------------------------------: |
-| [Phoenix](../reading/phoenix.livemd) | [Ecto Changeset](../reading/ecto_changeset.livemd) |
+| Previous                                                               | Next                                               |
+| ---------------------------------------------------------------------- | -------------------------------------------------: |
+| [Tailwind CSS Components](../exercises/tailwind_css_components.livemd) | [Ecto Changeset](../reading/ecto_changeset.livemd) |

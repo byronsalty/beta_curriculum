@@ -63,6 +63,27 @@ Here's that data represented as a `Pokemon` struct.
 <!-- livebook:{"force_markdown":true} -->
 
 ```elixir
+<<<<<<< HEAD
+{:ok, response} = HTTPoison.get("https://pokeapi.co/api/v2/pokemon/charmander")
+
+# response =
+#   case HTTPoison.get("https://pokeapi.co/api/v2/pokemon/charmander") do
+#     {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+#       Poison.decode!(body)
+#   end
+```
+
+```elixir
+data =
+  case HTTPoison.get("https://pokeapi.co/api/v2/pokemon/charmander") do
+    {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+      Poison.decode!(body)
+  end
+```
+
+```elixir
+data["types"]
+=======
 %Pokemon{
   id: 6,
   name: "charizard",
@@ -92,6 +113,7 @@ For example, you can retrieve the stats for `charizard` by making an HTTP GET re
 
 ```
 https://pokeapi.co/api/v2/pokemon/charizard
+>>>>>>> main
 ```
 
 You should be able to retrieve the data for a pokemon and return it as a `Pokemon` struct.
@@ -108,12 +130,40 @@ Pokelixir.get("charizard")
 You can retrieve and decode the response using [HTTPoison](https://hexdocs.pm/httpoison/HTTPoison.html) and [Poison](https://hexdocs.pm/poison/Poison.html).
 
 ```elixir
+<<<<<<< HEAD
+defmodule Pokemon do
+  defstruct [:name, :weight, :height, :types]
 
+  def from_response(http_response) do
+    response =
+      case http_response do
+        %HTTPoison.Response{status_code: 200, body: body} ->
+          Poison.decode!(body)
+
+        _ ->
+          IO.puts("no match in case")
+      end
+
+    types =
+      Enum.map(response["types"], fn t ->
+        t["type"]["name"]
+      end)
+
+    %Pokemon{
+      name: response["name"],
+      weight: response["weight"],
+      height: response["height"],
+      types: types
+    }
+  end
+end
+=======
 {:ok, response} = HTTPoison.get("https://pokeapi.co/api/v2/pokemon/charizard")
 response = Poison.decode!(response.body)
 ```
 
 </details>
+>>>>>>> main
 
 ## Get All Pokemon
 
