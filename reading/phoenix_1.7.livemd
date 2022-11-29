@@ -17,6 +17,37 @@ Mix.install([
 
 Ensure you type the `ea` keyboard shortcut to evaluate all Elixir cells before starting. Alternatively you can evaluate the Elixir cells as you read.
 
+```elixir
+defmodule Mafs do
+  def rolls do
+    sides = [:heads, :tails]
+    {Enum.random(sides), Enum.random(sides)}
+  end
+
+  def get_a_lot do
+    1..12000 |> Enum.map(fn _ -> rolls end)
+  end
+
+  def do_mafs(rolls) do
+    at_least_one = Enum.filter(rolls, fn {a, b} -> a == :heads || b == :heads end)
+    Enum.count(at_least_one) |> IO.inspect(label: "At least one heads count")
+
+    both_heads = Enum.filter(at_least_one, fn {a, b} -> a == :heads && b == :heads end)
+    Enum.count(both_heads) |> IO.inspect(label: "Both heads count")
+
+    only_one_heads = Enum.filter(at_least_one, fn {a, b} -> !(a == :heads && b == :heads) end)
+    Enum.count(only_one_heads) |> IO.inspect(label: "Only one heads count")
+
+    (Enum.count(both_heads) / Enum.count(at_least_one)) |> IO.inspect(label: "chance of both")
+  end
+end
+```
+
+```elixir
+rolls = Mafs.get_a_lot()
+Mafs.do_mafs(rolls)
+```
+
 ## Phoenix 1.7
 
 Phoenix 1.7 introduced several changes such as [Replacing Phoenix.View with Phoenix.Component](https://hexdocs.pm/phoenix_view/2.0.0/Phoenix.View.html#module-replaced-by-phoenix-component) as well as adding [Tailwind](./tailwind.livemd) by default with every Phoenix project.
@@ -31,7 +62,7 @@ The [Phoenix Framework](https://phoenixframework.org/) is the most popular web d
 
 [Chris McCord](http://chrismccord.com/), the creator of Phoenix, has an excellent video to demonstrate the power of Phoenix. Follow along and build a Twitter clone application in only 15 minutes.
 
-<!-- livebook:{"attrs":{"source":"YouTube.new(\"https://www.youtube.com/watch?v=MZvmYaFkNJI\")","title":"Build a real-time Twitter clone in 15 minutes with LiveView"},"chunks":null,"kind":"Elixir.HiddenCell","livebook_object":"smart_cell"} -->
+<!-- livebook:{"attrs":{"source":"YouTube.new(\"https://www.youtube.com/watch?v=MZvmYaFkNJI\")","title":"Build a real-time Twitter clone in 15 minutes with LiveView"},"kind":"Elixir.HiddenCell","livebook_object":"smart_cell"} -->
 
 ```elixir
 YouTube.new("https://www.youtube.com/watch?v=MZvmYaFkNJI")
