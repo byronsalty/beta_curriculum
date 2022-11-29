@@ -238,8 +238,7 @@ The curriculum is still a rough outline subject to change and feedback. see [sta
 * APIs & Parsing JSON
 * Phoenix
 * Tailwind
-* Form and Data Validation
-* Relational Database Management Systems and Ecto
+* Forms and Validation
 * Phoenix and Ecto
 * Phoenix Authentication
 * Testing Phoenix
