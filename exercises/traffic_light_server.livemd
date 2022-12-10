@@ -122,8 +122,6 @@ defmodule TrafficLight do
   """
   use GenServer
 
-  use GenServer
-
   @transitions %{green: :yellow, yellow: :red, red: :green}
 
   @impl
