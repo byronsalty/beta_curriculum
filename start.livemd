@@ -454,11 +454,10 @@ If you do not see the box above, or if you encounter any issues with this course
 
 <!-- livebook:{"break_markdown":true} -->
 
-### Forms and Validation
+### Ecto Changesets
 
 * Reading
   * [Ecto Changeset](reading/ecto_changeset.livemd)
-  * [Phoenix Forms](reading/phoenix_forms.livemd)
 * Exercises
   * [Sign Up Form](exercises/sign_up_form.livemd)
   * Bonus: [Book Changeset](exercises/book_changeset.livemd)
@@ -472,7 +471,7 @@ If you do not see the box above, or if you encounter any issues with this course
   * [Phoenix and Ecto](reading/phoenix_and_ecto.livemd)
 * Exercises
   * [Drills: SQL Queries](exercises/sql_drills.livemd)
-  * [Blog: Setup](exercises/blog_setup.livemd)
+  * [Blog: Posts](exercises/blog_posts.livemd)
 
 <!-- livebook:{"break_markdown":true} -->
 
@@ -489,9 +488,36 @@ If you do not see the box above, or if you encounter any issues with this course
 ### Schemas and Migrations
 
 * Reading
-  * Schemas and Migrations
+  * [Schemas and Migrations](./reading/schemas_and_migrations.livemd)
 * Exercises
-  * Mastery: Book List
+  * [Blog: Migration](./exercises/blog_migration.livemd)
+
+<!-- livebook:{"break_markdown":true} -->
+
+### Phoenix and Ecto One-to-Many Associations
+
+* Reading
+  * [BookSearch: Books](reading/book_search_books.livemd)
+* Exercises
+  * [Blog: Comments](exercises/blog_comments.livemd)
+
+<!-- livebook:{"break_markdown":true} -->
+
+### Seeding
+
+* Reading
+  * [BookSearch: Seeding](reading/book_search_seeding.livemd)
+* Exercises
+  * [Blog: Seeding](exercises/blog_seeding.livemd)
+
+<!-- livebook:{"break_markdown":true} -->
+
+### Phoenix Forms
+
+* Reading
+  * [BookSearch: Book Form](reading/book_search_book_form.livemd)
+* Exercises
+  * [Blog: Comment Form](exercises/blog_comment_form.livemd)
 
 <!-- livebook:{"break_markdown":true} -->
 
@@ -500,16 +526,7 @@ If you do not see the box above, or if you encounter any issues with this course
 * Reading
   * [Phoenix Authentication](reading/phoenix_authentication.livemd)
 * Exercises
-  * [Portfolio: Authenticated Blog Page](exercises/portfolio_auth_blog_page.livemd)
-
-<!-- livebook:{"break_markdown":true} -->
-
-### Phoenix and Ecto One-to-Many Relationships
-
-* Reading
-  * [BookSearch: Books](reading/book_search_books.livemd)
-* Exercises
-  * [Portfolio: Comments](exercises/portfolio_comments.livemd)
+  * [Blog: Authentication](exercises/blog_authentication.livemd)
 
 <!-- livebook:{"break_markdown":true} -->
 
@@ -518,7 +535,7 @@ If you do not see the box above, or if you encounter any issues with this course
 * Reading
   * [BookSearch: Tags](reading/book_search_tags.livemd)
 * Exercises
-  * [Portfolio: Tags](exercises/portfolio_tags.livemd)
+  * [Blog: Tags](exercises/blog_tags.livemd)
 
 <!-- livebook:{"break_markdown":true} -->
 
@@ -528,6 +545,10 @@ If you do not see the box above, or if you encounter any issues with this course
   * [BookSearch: Book Content](reading/book_search_book_content.livemd)
 * Reading
   * [Portfolio: Previews](reading/book_search_previews)
+
+<!-- livebook:{"break_markdown":true} -->
+
+### Deployment
 
 ## LiveView
 
@@ -573,20 +594,6 @@ If you do not see the box above, or if you encounter any issues with this course
 
 * Captone Project Guide
 
-<!-- livebook:{"break_markdown":true} -->
-
-### UX/UI Design + Accessibility
-
-* Reading
-  * UI/UX and Accessibility
-    * UI/UX
-    * Pen * Paper Prototyping
-    * Figma & Mocks
-    * Accessibility
-    * Axe, ColorZilla Color Combinations: https://toolness.GitHub.io/accessible-color-matrix/
-* Exercises
-  * [Capstone Project: Mock](exercises/capstone_project_mock.livemd)
-
 ## Quality Assurance
 
 ### Observability
@@ -622,28 +629,6 @@ If you do not see the box above, or if you encounter any issues with this course
   * Portfolio: Code Coverage
   * Portfolio: CI/CD Setup
 
-## Group Project
-
-### Project Management
-
-* Reading
-  * Agile, StandUps, Kanban
-  * Advanced Github
-    * Open Source Patterns
-    * PRs
-    * Forking
-    * Cloning
-    * Issues
-    * Rebasing
-* Exercises
-  * Group Project Setup
-
-<!-- livebook:{"break_markdown":true} -->
-
-### Group Project
-
-* Group Project Guide
-
 ## External Libraries
 
 ### Emailing & Swoosh
@@ -655,26 +640,6 @@ If you do not see the box above, or if you encounter any issues with this course
 <!-- livebook:{"break_markdown":true} -->
 
 ### Oban
-
-<!-- livebook:{"break_markdown":true} -->
-
-### Advanced Livebook
-
-## Elixir Applications in Production
-
-### Umbrella Projects
-
-<!-- livebook:{"break_markdown":true} -->
-
-### Genserver Bottlenecks
-
-<!-- livebook:{"break_markdown":true} -->
-
-### Worker Pools
-
-<!-- livebook:{"break_markdown":true} -->
-
-### Deployment
 
 ## Final Project
 

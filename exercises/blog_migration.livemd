@@ -1,0 +1,120 @@
+# Blog: Migration
+
+```elixir
+Mix.install([
+  {:kino, "~> 0.7.0", override: true},
+  {:youtube, github: "brooklinjazz/youtube"},
+  {:hidden_cell, github: "brooklinjazz/hidden_cell"}
+])
+```
+
+## Navigation
+
+[Return Home](../start.livemd)<span style="padding: 0 30px"></span>
+[Report An Issue](https://github.com/DockYard-Academy/beta_curriculum/issues/new?assignees=&labels=&template=issue.md&title=)
+
+## Blog: Migration
+
+Your existing [Blog](./blog_setup.livemd) application should have a blog posts with a `title`, `subtitle`, and `content`.
+
+If you do not already have an existing blog project, you can create one with the following commands:
+
+```
+$ mix phx.new blog
+$ mix phx.gen.html Posts Post posts title:string subtitle:string content:text
+$ mix ecto.migrate
+```
+
+Ideally, you should complete the [Blog: Search](blog_search.livemd) exercise before this one. However, it is not strictly necessary.
+
+<!-- livebook:{"break_markdown":true} -->
+
+### Blog Post Migration
+
+You're going to create a migration or many migrations to modify the blog posts table with the following changes:
+
+* Remove the `subtitle` field
+* Add a `publish_on` `:date` field.
+* Add a `visible` `:boolean` field which defaults to `true`.
+
+Ensure your `Post` schema reflects these changes, and ensure all tests pass. Modify existing tests to include the new fields.
+
+Ensure all features of your application such as creating, reading, updating, and deleting posts continue to work. You will likely need to modify any pages using old fields that are no longer valid.
+
+<!-- livebook:{"break_markdown":true} -->
+
+### Push to GitHub
+
+From the `blog` folder run the following commands.
+
+First, ensure that all tests pass.
+
+```
+mix test
+```
+
+Then stage and commit your changes to the Blog project.
+
+```
+git add .
+git commit -m "migrate post fields"
+git push
+```
+
+<!-- livebook:{"break_markdown":true} -->
+
+### Bonus: Constraints
+
+Create another migration to add the following constraints:
+
+* Modify the title field to be unique.
+* Modify the `title` so it must be between `3` and `100` characters.
+
+Ensure your `Post` schema reflects these constraints and validations.
+
+<!-- livebook:{"break_markdown":true} -->
+
+### Bonus: Form Fields
+
+Add a date input for the `published_on` field, and a checkbox input for the `visible` field.
+
+Use the IEx shell to view all `Post` records to ensure your form correctly creates a blog post.
+
+```
+iex -S mix
+```
+
+<!-- livebook:{"break_markdown":true} -->
+
+<!-- livebook:{"break_markdown":true} -->
+
+### Bonus: Visibility
+
+Hide any blog posts whose `visible` field is `false`. Hide any blog posts whose `published_on` field is after the current UTC date.
+
+## Commit Your Progress
+
+Run the following in your command line from the curriculum folder to track and save your progress in a Git commit.
+Ensure that you do not already have undesired or unrelated changes by running `git status` or by checking the source control tab in Visual Studio Code.
+
+```
+$ git checkout main
+$ git checkout -b exercise-blog_migration
+$ git add .
+$ git commit -m "finish blog migration exercise"
+$ git push origin exercise-blog_migration
+```
+
+Create a pull request to your forked `main` branch. Please do not create a pull request to the DockYard Academy repository as this will spam our PR tracker.
+
+**DockYard Academy Students Only:**
+
+Notify your teacher by including `@BrooklinJazz` in your PR description to get feedback.
+
+If you are interested in joining the next academy cohort, [sign up here](https://academy.dockyard.com/) to receive more news when it is available.
+
+## Up Next
+
+| Previous                                                           | Next                                                     |
+| ------------------------------------------------------------------ | -------------------------------------------------------: |
+| [Schemas And Migrations](../reading/schemas_and_migrations.livemd) | [Book Search Books](../reading/book_search_books.livemd) |

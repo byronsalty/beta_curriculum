@@ -238,14 +238,17 @@ The curriculum is still a rough outline subject to change and feedback. see [sta
 * APIs & Parsing JSON
 * Phoenix
 * Tailwind
-* Forms and Validation
+* Ecto Changesets
 * Phoenix and Ecto
 * Testing Phoenix
 * Schemas and Migrations
+* Phoenix and Ecto One-to-Many Associations
+* Seeding
+* Phoenix Forms
 * Phoenix Authentication
-* Phoenix and Ecto One-to-Many Relationships
 * Phoenix and Ecto Many-to-Many Relationships
 * Phoenix and Ecto One-to-One Relationships
+* Deployment
 ## LiveView
 * LiveView
 * Testing LiveView
@@ -253,23 +256,13 @@ The curriculum is still a rough outline subject to change and feedback. see [sta
 * GraphQL and Absinthe
 ## Capstone Project Preparation
 * Capstone Project
-* UX/UI Design + Accessibility
 ## Quality Assurance
 * Observability
 * Factories & Mocks
 * CI/CD, Code Coverage, GitHub Actions & Hooks
-## Group Project
-* Project Management
-* Group Project
 ## External Libraries
 * Emailing & Swoosh
 * Oban
-* Advanced Livebook
-## Elixir Applications in Production
-* Umbrella Projects
-* Genserver Bottlenecks
-* Worker Pools
-* Deployment
 ## Final Project
 * Demo Day
 <!-- course-outline-end -->
