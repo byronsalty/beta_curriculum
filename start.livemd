@@ -299,6 +299,19 @@ If you do not see the box above, or if you encounter any issues with this course
 
 <!-- livebook:{"break_markdown":true} -->
 
+### Persistence Using the File System
+
+* Reading
+  * [File](reading/file.livemd)
+* Exercises
+  * Drills: [File](exercises/file_drills.livemd)
+  * [Save Game](exercises/save_game.livemd)
+  * Bonus: [File System Todo App](exercises/file_system_todo_app.livemd)
+  * Bonus: [Document Tools](exercises/document_tools.livemd)
+  * Mastery: [File Search](exercises/file_search.livemd)
+
+<!-- livebook:{"break_markdown":true} -->
+
 ### Processes
 
 * Reading
@@ -354,6 +367,16 @@ If you do not see the box above, or if you encounter any issues with this course
 
 <!-- livebook:{"break_markdown":true} -->
 
+### Metaprogramming
+
+* Reading
+  * [Metaprogramming](reading/metaprogramming.livemd)
+* Exercises
+  * [Macro Math](exercises/macro_math.livemd)
+  * [Custom Assertions](exercises/custom_assertions.livemd)
+
+<!-- livebook:{"break_markdown":true} -->
+
 ### Mix Projects & Processes
 
 * Reading
@@ -386,19 +409,6 @@ If you do not see the box above, or if you encounter any issues with this course
   * [Agent Journal](exercises/agent_journal.livemd)
   * [ETS Warehouse](exercises/inventory_management.livemd)
   * Mastery: [Advanced Score Tracker](exercises/advanced_score_tracker.livemd)
-
-<!-- livebook:{"break_markdown":true} -->
-
-### Persistence Using the File System
-
-* Reading
-  * [File](reading/file.livemd)
-* Exercises
-  * Drills: [File](exercises/file_drills.livemd)
-  * [Save Game](exercises/save_game.livemd)
-  * Bonus: [File System Todo App](exercises/file_system_todo_app.livemd)
-  * Bonus: [Document Tools](exercises/document_tools.livemd)
-  * Mastery: [File Search](exercises/file_search.livemd)
 
 <!-- livebook:{"break_markdown":true} -->
 
@@ -543,12 +553,17 @@ If you do not see the box above, or if you encounter any issues with this course
 
 * Reading
   * [BookSearch: Book Content](reading/book_search_book_content.livemd)
-* Reading
-  * [Portfolio: Previews](reading/book_search_previews)
+* Exercise
+  * [Blog: Blog Content](exercises/blog_content.livemd)
 
 <!-- livebook:{"break_markdown":true} -->
 
 ### Deployment
+
+* Reading
+  * [BookSearch: Deployment](reading/book_search_deployment.livemd)
+* Exercise
+  * Bonus: [Blog: Deployment](exercises/deployment.livemd)
 
 ## LiveView
 
@@ -614,20 +629,6 @@ If you do not see the box above, or if you encounter any issues with this course
   * Mocks with Mox
 * Exercises
   * Portfolio: Character Factory
-
-<!-- livebook:{"break_markdown":true} -->
-
-### CI/CD, Code Coverage, GitHub Actions & Hooks
-
-* Reading
-  * CI/CD
-  * GitHub Actions * Hooks
-  * Code Coverage
-* Exercises
-  * Portfolio: Pre-Commit Credo hook
-  * Portfolio: Pre-Push Test hook
-  * Portfolio: Code Coverage
-  * Portfolio: CI/CD Setup
 
 ## External Libraries
 

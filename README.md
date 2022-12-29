@@ -47,7 +47,7 @@ In the future when working with multiple Elixir projects, there is a tool called
    - Run  `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope LocalMachine` in an administrator terminal in order to use `mix`.
 
 3. Install [Livebook](https://github.com/livebook-dev/livebook)
-   - `mix escript install hex livebook`
+   - `mix escript.install hex livebook`
    - After installing you will see a prompt that says you need to add `c:/Users/YOUR_USERNAME/.mix/escripts` to the system PATH. Search for `Set the system environments variables` and it will open the Control Panel section. Under the "Advanced" tab select "Environment Variables", then click on the entry for PATH and the "Edit" button. Select "New" and then enter the prompted path so that you can run `livebook` directly from the command line.
    - You may prefer to install [Livebook Desktop](https://livebook.dev/#install) instead of running Livebook with an `escript`.
 
@@ -223,15 +223,16 @@ The curriculum is still a rough outline subject to change and feedback. see [sta
 * Benchmarking and Performance
 * Streams
 * Performance Optimization
+* Persistence Using the File System
 * Processes
 * GenServers
 * Asynchronous Messages
 * Supervisor Basics and Fault Tolerance
 * Testing GenServers
+* Metaprogramming
 * Mix Projects & Processes
 * Concurrency With Tasks
 * State Management With Agents and ETS
-* Persistence Using the File System
 * Rubix Cube Project
 ## Web Servers and Phoenix
 * HTML and CSS
@@ -259,7 +260,6 @@ The curriculum is still a rough outline subject to change and feedback. see [sta
 ## Quality Assurance
 * Observability
 * Factories & Mocks
-* CI/CD, Code Coverage, GitHub Actions & Hooks
 ## External Libraries
 * Emailing & Swoosh
 * Oban
