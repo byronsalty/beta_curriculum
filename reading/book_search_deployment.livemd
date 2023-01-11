@@ -541,7 +541,7 @@ jobs:
 
     name: run tests
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: erlef/setup-beam@v1
         with:
           otp-version: '25.2'
@@ -686,6 +686,6 @@ If you are interested in joining the next academy cohort, [sign up here](https:/
 
 ## Up Next
 
-| Previous                                         | Next                                   |
-| ------------------------------------------------ | -------------------------------------: |
-| [Blog Content](../exercises/blog_content.livemd) | [LiveView](../reading/liveview.livemd) |
+| Previous                                         | Next                                         |
+| ------------------------------------------------ | -------------------------------------------: |
+| [Blog Content](../exercises/blog_content.livemd) | [Deployment](../exercises/deployment.livemd) |
